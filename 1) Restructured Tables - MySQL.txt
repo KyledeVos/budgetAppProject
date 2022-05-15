@@ -1,0 +1,189 @@
+//Restructured Tables:
+
+1) User Table
+
+CREATE TABLE users(
+id INT NOT NULL AUTO_INCREMENT,
+first_name VARCHAR(100) NOT NULL,
+last_name VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL,
+PRIMARY KEY(id)
+);
+
+---------------------------------------------------
+
+2) Income Table and LookUp Table
+
+CREATE TABLE income(
+id INT NOT NULL AUTO_INCREMENT,
+source_name VARCHAR(100) NOT NULL,
+amount DOUBLE NOT NULL,
+payment_date DATE NOT NULL,
+payment_interval VARCHAR (100) NOT NULL,
+notes VARCHAR(150),
+PRIMARY KEY(id)
+);
+
+
+CREATE TABLE user_income(
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+income_id INT NOT NULL,
+PRIMARY KEY(id),
+KEY user_id_idx(user_id),
+KEY income_id_idx(income_id),
+CONSTRAINT user_id1 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT income_id FOREIGN KEY(income_id) REFERENCES income(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+---------------------------------------------------
+
+
+3) Expense Tables
+//one table for one-time expenses or recurring expenses (no end date), one table for debt_payments (with an end date)
+//2 lookup tables
+
+	Expenses
+
+CREATE TABLE expenses(
+id INT NOT NULL AUTO_INCREMENT,
+type_category VARCHAR(100) NOT NULL,
+paid_to VARCHAR (100) NOT NULL,
+amount DOUBLE NOT NULL,
+payment_date DATE NOT NULL,
+description VARCHAR(100),
+notes VARCHAR(150), 
+PRIMARY KEY(id)
+);
+
+
+CREATE TABLE  user_expenses(
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+expenses_id INT NOT NULL,
+PRIMARY KEY(id),
+KEY user_id_idx(user_id),
+KEY expenses_id_idx(expenses_id),
+CONSTRAINT user_id2 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT expenses_id FOREIGN KEY(expenses_id) REFERENCES expenses(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+	Debt Payments
+
+CREATE TABLE debt_payments(
+id INT NOT NULL AUTO_INCREMENT,
+type_category VARCHAR(100) NOT NULL,
+paid_to VARCHAR (100) NOT NULL,
+amount DOUBLE NOT NULL,
+payment_date DATE NOT NULL,
+end_date DATE NOT  NULL,
+total_owed DOUBLE NOT NULL,
+interest DOUBLE NOT NULL,
+notes VARCHAR(150), 
+PRIMARY KEY(id)
+);
+
+
+CREATE TABLE  user_debt_payments(
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+debt_payments_id INT NOT NULL,
+PRIMARY KEY(id),
+KEY user_id_idx(user_id),
+KEY debt_payments_id_idx(debt_payments_id),
+CONSTRAINT user_id3 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT debt_payments_id FOREIGN KEY(debt_payments_id) REFERENCES debt_payments(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+---------------------------------------------------
+
+4) Savings Tables
+
+	savings
+
+CREATE TABLE savings(
+id INT NOT NULL AUTO_INCREMENT,
+saved_location VARCHAR(100) NOT NULL,
+amount DOUBLE NOT NULL,
+saved_date DATE NOT NULL,
+notes VARCHAR(150),
+PRIMARY KEY(id)
+);
+
+
+CREATE TABLE  user_savings(
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+savings_id INT NOT NULL,
+PRIMARY KEY(id),
+KEY user_id_idx(user_id),
+KEY savings_id_idx(savings_id),
+CONSTRAINT user_id4 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT savings_id FOREIGN KEY(savings_id) REFERENCES savings(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+	custom goals
+
+CREATE TABLE custom_goals(
+id INT NOT NULL AUTO_INCREMENT,
+description VARCHAR(100) NOT NULL,
+saved_location VARCHAR(100) NOT NULL,
+amount DOUBLE NOT NULL,
+saved_date DATE NOT NULL,
+total_desired DOUBLE NOT NULL,
+final_date DATE NOT NULL,
+notes VARCHAR(150),
+PRIMARY KEY(id)
+);
+
+
+CREATE TABLE  user_custom_goals(
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+custom_goals_id INT NOT NULL,
+PRIMARY KEY(id),
+KEY user_id_idx(user_id),
+KEY custom_goals_idx(custom_goals_id),
+CONSTRAINT user_id5 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT custom_goals_id FOREIGN KEY(custom_goals_id) REFERENCES custom_goals(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+---------------------------------------------------
+
+5) Account Summary Tables
+
+CREATE TABLE accountSummary(
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+account_balance DOUBLE NOT NULL,
+month VARCHAR(20) NOT NULL,
+year VARCHAR(20) NOT NULL,
+total_income DOUBLE NOT NULL,
+total_expenses DOUBLE NOT NULL,
+total_savings DOUBLE NOT NULL,
+PRIMARY KEY(id),
+KEY user_id_idx(user_id),
+CONSTRAINT user_id21 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE  user_accountSummary(
+id INT NOT NULL AUTO_INCREMENT,
+user_id INT NOT NULL,
+accountSummary_id INT NOT NULL,
+PRIMARY KEY(id),
+KEY user_id_idx(user_id),
+KEY accountSummary_idx(accountSummary_id),
+CONSTRAINT user_id6 FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT accountSummary_id FOREIGN KEY(accountSummary_id) REFERENCES accountSummary(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+
+
