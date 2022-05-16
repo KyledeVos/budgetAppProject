@@ -1,0 +1,190 @@
+1) Test Data Retrieval and Display of Tables
+
+i) Users Table
+
+preparedStatement = connection.prepareStatement("Select * FROM users");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String first_Name = resultSet.getString("first_name");
+                String last_Name = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+
+                System.out.println("id: " + id + " - " + first_Name + " " + last_Name + " email:" + email);
+            }
+
+
+Results: Pass
+
+
+ii) Income Table
+
+preparedStatement = connection.prepareStatement("Select * FROM income");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String source_name = resultSet.getString("source_name");
+                double amount = resultSet.getDouble("amount");
+                String payment_date = resultSet.getString("payment_date");
+                String interval = resultSet.getString("payment_interval");
+                String notes;
+                try{
+                     notes = resultSet.getString("notes");
+                } catch(NullPointerException exc){
+                    notes = "none";
+                }
+
+                System.out.println("id: " + id + " - " + source_name + " " + amount + " " + payment_date + " " + interval + " " + notes);
+            }
+
+Result: Pass
+
+
+iii) Expenses Table
+
+preparedStatement = connection.prepareStatement("Select * FROM expenses");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String type = resultSet.getString("type_category");
+                String paid_to = resultSet.getString("paid_to");
+                double amount = resultSet.getDouble("amount");
+                String payment_date = resultSet.getString("payment_date");
+                String description = resultSet.getString("description");
+                String notes;
+                try{
+                     notes = resultSet.getString("notes");
+                } catch(NullPointerException exc){
+                    notes = "none";
+                }
+
+                System.out.println("id: " + id + " - " + type + " " + paid_to + " " + amount + " " + payment_date + " " + description + " " + notes);
+
+            }
+
+Results: Pass
+
+
+iv) debt_payments
+
+preparedStatement = connection.prepareStatement("Select * FROM debt_payments");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String type_category = resultSet.getString("type_category");
+                String paid_to = resultSet.getString("paid_to");
+                double amount = resultSet.getDouble("amount");
+                String payment_date = resultSet.getString("payment_date");
+                String end_date = resultSet.getString("end_date");
+                double total_owed = resultSet.getDouble("total_owed");
+                double interest = resultSet.getDouble("interest");
+                String notes;
+                try{
+                     notes = resultSet.getString("notes");
+                } catch(NullPointerException exc){
+
+                    notes = "none";
+                }
+
+                System.out.println("id: " + id + " - " + type_category + " " + paid_to +  " " + amount + " " + payment_date  + " " + end_date +
+                        " " + " " + total_owed + " " + interest + " " + notes);
+            }
+
+Results: Pass
+
+
+
+v) Savings Table
+
+preparedStatement = connection.prepareStatement("Select * FROM savings");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String saved_location = resultSet.getString("saved_location");
+                double amount = resultSet.getDouble("amount");
+                String saved_date = resultSet.getString("saved_date");
+                String notes;
+                try{
+                     notes = resultSet.getString("notes");
+                } catch(NullPointerException exc){
+
+                    notes = "none";
+                }
+
+                System.out.println("id: " + id + " - " + saved_location + " " + amount + " " + saved_date  + " " + notes);
+            }
+
+Results: Pass
+
+
+vi) Custom Goals
+
+
+preparedStatement = connection.prepareStatement("Select * FROM custom_goals");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String description = resultSet.getString("description");
+                String saved_location = resultSet.getString("saved_location");
+                double amount = resultSet.getDouble("amount");
+                String saved_date = resultSet.getString("saved_date");
+                double total_desired = resultSet.getDouble("total_desired");
+                String final_date = resultSet.getString("final_date");
+                String notes;
+                try{
+                     notes = resultSet.getString("notes");
+                } catch(NullPointerException exc){
+
+                    notes = "none";
+                }
+
+                System.out.println("id: " + id + " - " + description + " " + saved_location +  " " + amount + " " + saved_date  +
+                        " " + " " + total_desired + " " + final_date + " " + notes);
+            }
+
+Results: Pass
+
+
+---------------------------------------------------------------------------------------------------
+
+Test 2: Add Data to Tables
+
+preparedStatement = connection.prepareStatement("INSERT INTO users VALUES(?,?,?,?)");
+            preparedStatement.setInt(1, 3);
+            preparedStatement.setString(2, "Mark");
+            preparedStatement.setString(3, "Wondel");
+            preparedStatement.setString(4, "mw@gmail.com");
+            preparedStatement.executeUpdate();
+
+
+Results:Pass
+
+
+--------------------------------------------------------------------------------------------------
+
+Test 3: Update Data in one Table
+
+ preparedStatement = connection.prepareStatement("UPDATE debt_payments SET amount = ? WHERE id = 32 ");
+            preparedStatement.setDouble(1, 500);
+            preparedStatement.executeUpdate();
+
+
+Results: Pass
+
+--------------------------------------------------------------------------------------------------
+
+Test 4: Delete Data From one Table
+
+preparedStatement = connection.prepareStatement("DELETE from users WHERE id = 3");
+            preparedStatement.executeUpdate();
+
+Results: Pass
+
+
+
