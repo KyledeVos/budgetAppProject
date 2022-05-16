@@ -1,0 +1,122 @@
+Testing Database
+
+//Test 1
+Query each user's total income
+
+
+SELECT u.first_name, SUM(i.amount) as income_total
+FROM users u
+JOIN user_income ui
+ON u.id = ui.user_id
+JOIN income i
+ON ui.income_id = i.id
+GROUP BY u.id
+
+Results: Pass
+
+-----------------------------------------------------------
+//Test 2
+Query a User's total monthly expenses
+
+i) Expenses with no end date: one time purchase or recurring 
+
+SELECT u.first_name, SUM(e.amount) as expense_total
+FROM users u
+JOIN user_expenses ue
+ON u.id = ue.user_id
+JOIN expenses e
+ON ue.expenses_id = e.id
+GROUP BY u.id;
+
+Results: Pass
+
+ii) debt_payments
+
+SELECT u.first_name, SUM(d.amount) as debts_total
+FROM users u
+JOIN user_debt_payments ud
+ON u.id = ud.user_id
+JOIN debt_payments d
+ON ud.debt_payments_id = d.id
+GROUP BY u.id;
+
+Results: Pass
+
+-----------------------------------------------------------
+//Test 3
+
+Through Multiple Quesries, determine how much a user can save each month
+
+
+	January
+
+SELECT u.first_name, SUM(s.amount) as amount_saved_jan
+FROM users u
+JOIN user_savings us
+ON u.id = us.user_id
+JOIN savings s
+ON us.savings_id = s.id
+WHERE s.saved_date < "2022-02-01"
+GROUP BY u.id;
+
+Results: Pass
+
+	February
+
+
+SELECT u.first_name, SUM(s.amount) as amount_saved_feb
+FROM users u
+JOIN user_savings us
+ON u.id = us.user_id
+JOIN savings s
+ON us.savings_id = s.id
+WHERE s.saved_date > "2022-01-31" AND s.saved_date < "2022-03-01"
+GROUP BY u.id;
+
+Results: Pass
+
+
+	March
+
+
+SELECT u.first_name, SUM(s.amount) as amount_saved_march
+FROM users u
+JOIN user_savings us
+ON u.id = us.user_id
+JOIN savings s
+ON us.savings_id = s.id
+WHERE s.saved_date > "2022-02-28" AND s.saved_date < "2022-04-01"
+GROUP BY u.id;
+
+Results: Pass
+
+-----------------------------------------------------------
+//Test 4
+
+Determine (through one or more queries) how long it will take a user to save up to a certain amount
+
+SELECT u.id, c.total_desired/AVG(c.amount)
+FROM users u
+JOIN user_custom_goals uc
+ON u.id = uc.user_id
+JOIN custom_goals c
+ON uc.custom_goals_id = c.id
+where c.description = "new TV" 
+GROUP BY u.id;
+
+Results: Pass
+
+-----------------------------------------------------------
+//Test 5 - checking relational database, primary and foreign keys, joins
+
+	Tests 1 -4 have checked these and all work well
+
+
+
+
+
+
+
+
+
+
