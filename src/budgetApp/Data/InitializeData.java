@@ -5,14 +5,23 @@ import budgetApp.Model.*;
 import java.sql.*;
 import java.util.LinkedList;
 
+
+//Data Class used to connect to Database and initialize linked lists of each object specific to each table
+//in the database
 public class InitializeData {
 
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private ResultSet resultSet;
 
-    private Connection connection = null;
-    private PreparedStatement preparedStatement = null;
-    private ResultSet resultSet = null;
+    public InitializeData() {
+        this.connection = null;
+        this.preparedStatement = null;
+        this.resultSet = null;
+    }
 
-
+    //method called in controller class to initialize linked lists of each object
+    //@Params Linked Lists of each Model Object Type
     public void initializeFromDatabase(LinkedList<Users> userList, LinkedList<Income> incomes, LinkedList<Expenses> expenses
                                        , LinkedList<DebtPayments> debtPayments, LinkedList<Savings> savings,
                                        LinkedList<CustomGoals> customGoals, LinkedList<AccountSummary> accountSummaries,
@@ -25,8 +34,10 @@ public class InitializeData {
             //load the jdbc Driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
+            //create connection to dataBase
             connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
 
+            //Call Each Method below that initializes a unique linked list of each Model Object Type
             initializeUsers(userList);
             initializeIncomes(incomes);
             initializeExpenses(expenses);
