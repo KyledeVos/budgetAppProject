@@ -9,6 +9,20 @@ public class Income {
     String payment_interval;
     String notes;
 
+    public Income() {
+        //empty constructor when initializing linkedLists from database
+    }
+
+    //Parameterized Constructor when creating new Income Entry
+    public Income(int id, String source_name, double amount, String payment_date, String payment_interval, String notes) {
+        this.id = id;
+        this.source_name = source_name;
+        this.amount = amount;
+        this.payment_date = payment_date;
+        this.payment_interval = payment_interval;
+        this.notes = notes;
+    }
+
     public int getId() {
         return id;
     }

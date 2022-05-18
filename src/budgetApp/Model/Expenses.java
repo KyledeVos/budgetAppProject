@@ -10,6 +10,21 @@ public class Expenses {
     String description;
     String notes;
 
+    public Expenses() {
+        //empty constructor when initializing linkedLists from database
+    }
+
+    //Parameterized Constructor when creating new Expense Entry
+    public Expenses(int id, String type_category, String paid_to, double amount, String payment_date, String description, String notes) {
+        this.id = id;
+        this.type_category = type_category;
+        this.paid_to = paid_to;
+        this.amount = amount;
+        this.payment_date = payment_date;
+        this.description = description;
+        this.notes = notes;
+    }
+
     public int getId() {
         return id;
     }

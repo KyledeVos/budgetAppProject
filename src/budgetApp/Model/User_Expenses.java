@@ -6,6 +6,17 @@ public class User_Expenses {
     int user_id;
     int expenses_id;
 
+    public User_Expenses() {
+        //empty constructor when initializing linkedLists from database
+    }
+
+    //Parameterized Constructor when creating new User_Expense Entry
+    public User_Expenses(int id, int user_id, int expenses_id) {
+        this.id = id;
+        this.user_id = user_id;
+        this.expenses_id = expenses_id;
+    }
+
     public int getId() {
         return id;
     }

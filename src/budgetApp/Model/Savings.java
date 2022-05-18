@@ -8,6 +8,19 @@ public class Savings {
     String saved_date;
     String notes;
 
+    public Savings() {
+        //empty constructor when initializing linkedLists from database
+    }
+
+    //Parameterized Constructor when creating new Savings Entry
+    public Savings(int id, String saved_location, double amount, String saved_date, String notes) {
+        this.id = id;
+        this.saved_location = saved_location;
+        this.amount = amount;
+        this.saved_date = saved_date;
+        this.notes = notes;
+    }
+
     public int getId() {
         return id;
     }

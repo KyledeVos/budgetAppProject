@@ -8,10 +8,18 @@ public class Users {
         String email;
 
         public Users(){
-
+            //empty constructor when initializing linkedLists from database
         }
 
-        public int getId() {
+    //Parameterized Constructor when creating new User Entry
+    public Users(int id, String first_name, String last_name, String email) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.email = email;
+    }
+
+    public int getId() {
             return id;
         }
 

@@ -11,6 +11,23 @@ public class CustomGoals {
     String final_date;
     String notes;
 
+    public CustomGoals() {
+        //empty constructor when initializing linkedLists from database
+    }
+
+    //Parameterized Constructor when creating new Custom_Goals Entry
+    public CustomGoals(int id, String description, String saved_location, double amount, String saved_date,
+                       double total_desired, String final_date, String notes) {
+        this.id = id;
+        this.description = description;
+        this.saved_location = saved_location;
+        this.amount = amount;
+        this.saved_date = saved_date;
+        this.total_desired = total_desired;
+        this.final_date = final_date;
+        this.notes = notes;
+    }
+
     public int getId() {
         return id;
     }

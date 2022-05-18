@@ -12,6 +12,24 @@ public class DebtPayments {
     double interest;
     String notes;
 
+    public DebtPayments() {
+        //empty constructor when initializing linkedLists from database
+    }
+
+    //Parameterized Constructor when creating new Debt_Payment Entry
+    public DebtPayments(int id, String type_category, String paid_to, double amount, String payment_date,
+                        String end_date, double total_owed, double interest, String notes) {
+        this.id = id;
+        this.type_category = type_category;
+        this.paid_to = paid_to;
+        this.amount = amount;
+        this.payment_date = payment_date;
+        this.end_date = end_date;
+        this.total_owed = total_owed;
+        this.interest = interest;
+        this.notes = notes;
+    }
+
     public int getId() {
         return id;
     }

@@ -5,6 +5,17 @@ public class Users_Income {
     int user_id;
     int income_id;
 
+    public Users_Income() {
+        //empty constructor when initializing linkedLists from database
+    }
+
+    //Parameterized Constructor when creating new User_Income Entry
+    public Users_Income(int id, int user_id, int income_id) {
+        this.id = id;
+        this.user_id = user_id;
+        this.income_id = income_id;
+    }
+
     public int getId() {
         return id;
     }
