@@ -100,9 +100,9 @@ public class AddDataToDataBase {
         }
     }
 
-    //Method to add new expenses to database
-    //@params type_category, paid_to, amount, payment_date, description, notes
-    public void addExpenses(String type_category, String paid_to,  double amount, String payment_date, String description, String notes){
+    //Method to add new expenses to database and update user_expense table
+    //@params user_id, type_category, paid_to, amount, payment_date, description, notes
+    public void addExpenses(int user_id, String type_category, String paid_to,  double amount, String payment_date, String description, String notes){
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO expenses(type_category, paid_to, amount, payment_date, description, notes)" +
                     " VALUES(?, ? ,?, ?, ? , ?)");
@@ -113,6 +113,23 @@ public class AddDataToDataBase {
             preparedStatement.setString(5, description);
             preparedStatement.setString(6, notes);
             preparedStatement.executeUpdate();
+
+            int expense_id = 0;
+
+            //get id from last insert (new expense)
+            preparedStatement = connection.prepareStatement("SELECT * FROM expenses ORDER BY id DESC LIMIT 1");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                expense_id = resultSet.getInt("id");
+            }
+
+            //update lookup table with user_id and expenses_id
+            preparedStatement = connection.prepareStatement("INSERT INTO user_expenses(user_id, expenses_id) VALUES(? , ?)");
+            preparedStatement.setInt(1, user_id);
+            preparedStatement.setInt(2, expense_id);
+            preparedStatement.executeUpdate();
+
         } catch(SQLException e){
             System.out.println(e.getMessage());
         } finally {
@@ -126,9 +143,9 @@ public class AddDataToDataBase {
     }
 
 
-    //Method to add new debt_payments to database
-    //@params type_category, paid_to, amount, payment_date, end_date, total_owed, interest, notes
-    public void addDebtExpenses(String type_category, String paid_to,  double amount, String payment_date, String end_date, double total_owed
+    //Method to add new debt_payments to database and update user_debt_payments table
+    //@params user_id type_category, paid_to, amount, payment_date, end_date, total_owed, interest, notes
+    public void addDebtExpenses(int user_id, String type_category, String paid_to,  double amount, String payment_date, String end_date, double total_owed
                                 , double interest, String notes){
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO debt_payments(type_category, paid_to, amount, " +
@@ -143,6 +160,23 @@ public class AddDataToDataBase {
             preparedStatement.setDouble(7, interest);
             preparedStatement.setString(8, notes);
             preparedStatement.executeUpdate();
+
+            int debt_payments_id = 0;
+
+            //get id from last insert (new debt_payment)
+            preparedStatement = connection.prepareStatement("SELECT * FROM debt_payments ORDER BY id DESC LIMIT 1");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                debt_payments_id = resultSet.getInt("id");
+            }
+
+            //update lookup table with user_id and debt_payments_id
+            preparedStatement = connection.prepareStatement("INSERT INTO user_debt_payments(user_id, debt_payments_id) VALUES(? , ?)");
+            preparedStatement.setInt(1, user_id);
+            preparedStatement.setInt(2, debt_payments_id);
+            preparedStatement.executeUpdate();
+
         } catch(SQLException e){
             System.out.println(e.getMessage());
         } finally {
@@ -156,9 +190,9 @@ public class AddDataToDataBase {
     }
 
 
-    //Method to add new savings to database
-    //@params saved_location, amount, saved_date, notes
-    public void addSavings(String saved_location, double amount, String saved_date, String notes){
+    //Method to add new savings to database and update user_savings table
+    //@params user_id, saved_location, amount, saved_date, notes
+    public void addSavings(int user_id, String saved_location, double amount, String saved_date, String notes){
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO savings(saved_location, amount, " +
                     "saved_date, notes)" +
@@ -168,6 +202,23 @@ public class AddDataToDataBase {
             preparedStatement.setString(3, saved_date);
             preparedStatement.setString(4, notes);
             preparedStatement.executeUpdate();
+
+            int savings_id = 0;
+
+            //get id from last insert (new savings)
+            preparedStatement = connection.prepareStatement("SELECT * FROM savings ORDER BY id DESC LIMIT 1");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                savings_id = resultSet.getInt("id");
+            }
+
+            //update lookup table with user_id and savings_id
+            preparedStatement = connection.prepareStatement("INSERT INTO user_savings(user_id, savings_id) VALUES(? , ?)");
+            preparedStatement.setInt(1, user_id);
+            preparedStatement.setInt(2, savings_id);
+            preparedStatement.executeUpdate();
+
         } catch(SQLException e){
             System.out.println(e.getMessage());
         } finally {
@@ -181,9 +232,9 @@ public class AddDataToDataBase {
     }
 
 
-    //Method to add new custom_goal to database
-    //@params description, saved_location, amount, saved_date, total_desired, final_date, notes
-    public void addCustomGoal(String description, String saved_location,  double amount, String saved_date, double total_desired,
+    //Method to add new custom_goal to database and update user_custom_goals table
+    //@params user_id, description, saved_location, amount, saved_date, total_desired, final_date, notes
+    public void addCustomGoal(int user_id, String description, String saved_location,  double amount, String saved_date, double total_desired,
                               String final_date, String notes){
         try {
             preparedStatement = connection.prepareStatement("INSERT INTO custom_goals(description, saved_location, amount, saved_date, " +
@@ -197,6 +248,23 @@ public class AddDataToDataBase {
             preparedStatement.setString(6, final_date);
             preparedStatement.setString(7, notes);
             preparedStatement.executeUpdate();
+
+            int custom_goals_id = 0;
+
+            //get id from last insert (new custom_goal payment)
+            preparedStatement = connection.prepareStatement("SELECT * FROM custom_goals ORDER BY id DESC LIMIT 1");
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                custom_goals_id = resultSet.getInt("id");
+            }
+
+            //update lookup table with user_id and savings_id
+            preparedStatement = connection.prepareStatement("INSERT INTO user_custom_goals(user_id, custom_goals_id) VALUES(? , ?)");
+            preparedStatement.setInt(1, user_id);
+            preparedStatement.setInt(2, custom_goals_id);
+            preparedStatement.executeUpdate();
+
         } catch(SQLException e){
             System.out.println(e.getMessage());
         } finally {
