@@ -1,5 +1,6 @@
 package budgetApp.Data;
 
+import budgetApp.Controllers.LinkedListsClass;
 import budgetApp.Model.*;
 
 import java.sql.*;
@@ -8,13 +9,13 @@ import java.util.LinkedList;
 
 //Data Class used to connect to Database and initialize linked lists of each object specific to each table
 //in the database
-public class InitializeData {
+public class PopulateLinkedLists {
 
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-    public InitializeData() {
+    public PopulateLinkedLists() {
         this.connection = null;
         this.preparedStatement = null;
         this.resultSet = null;
@@ -22,12 +23,7 @@ public class InitializeData {
 
     //method called in controller class to initialize linked lists of each object
     //@Params Linked Lists of each Model Object Type
-    public void initializeFromDatabase(LinkedList<Users> userList, LinkedList<Income> incomes, LinkedList<Expenses> expenses
-                                       , LinkedList<DebtPayments> debtPayments, LinkedList<Savings> savings,
-                                       LinkedList<CustomGoals> customGoals, LinkedList<AccountSummary> accountSummaries,
-                                       LinkedList<Users_Income> users_incomes, LinkedList<User_Expenses> user_expenses,
-                                       LinkedList<User_DebtPayments> user_debtPayments, LinkedList<User_Savings> user_savings,
-                                       LinkedList<User_CustomGoals> user_customGoals, LinkedList<User_AccountSummary> user_accountSummaries){
+    public void initializeFromDatabase(LinkedListsClass listsClass){
 
         try{
 
@@ -38,19 +34,19 @@ public class InitializeData {
             connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=testing&password=fake&useSSL=false");
 
             //Call Each Method below that initializes a unique linked list of each Model Object Type
-            initializeUsers(userList);
-            initializeIncomes(incomes);
-            initializeExpenses(expenses);
-            initializeDebtPayments(debtPayments);
-            initializeSavings(savings);
-            initializeCustomGoals(customGoals);
-            initializeAccountSummary(accountSummaries);
-            initializeUserIncome(users_incomes);
-            initializeUserExpenses(user_expenses);
-            initializeUserDebtPayments(user_debtPayments);
-            initializeUserSavings(user_savings);
-            initializeUserCustomGoals(user_customGoals);
-            initializeUserAccountSummary(user_accountSummaries);
+            initializeUsers(listsClass.getUser());
+            initializeIncomes(listsClass.getIncomes());
+            initializeExpenses(listsClass.getExpenses());
+            initializeDebtPayments(listsClass.getDebtPayments());
+            initializeSavings(listsClass.getSavings());
+            initializeCustomGoals(listsClass.getCustomGoals());
+            initializeAccountSummary(listsClass.getAccountSummaries());
+            initializeUserIncome(listsClass.getUsers_incomes());
+            initializeUserExpenses(listsClass.getUser_expenses());
+            initializeUserDebtPayments(listsClass.getUser_debtPayments());
+            initializeUserSavings(listsClass.getUser_savings());
+            initializeUserCustomGoals(listsClass.getUser_customGoals());
+            initializeUserAccountSummary(listsClass.getUser_accountSummaries());
 
 
         }catch(SQLException exc){
@@ -74,6 +70,9 @@ public class InitializeData {
     //@Params User LinkedList
     private void initializeUsers(LinkedList<Users> userList) throws SQLException{
 
+        //first we clear all data that may be in the list
+        userList.clear();
+
         preparedStatement = connection.prepareStatement("Select * FROM users");
         resultSet = preparedStatement.executeQuery();
 
@@ -93,6 +92,9 @@ public class InitializeData {
     //populate income List with data from Income Table in Database
     //@Params Income LinkedList
     private void initializeIncomes(LinkedList<Income> incomeList) throws SQLException{
+
+        //first we clear all data that may be in the list
+        incomeList.clear();
 
         preparedStatement = connection.prepareStatement("Select * FROM income");
         resultSet = preparedStatement.executeQuery();
@@ -115,6 +117,9 @@ public class InitializeData {
     //@Params Expense LinkedList
     private void initializeExpenses(LinkedList<Expenses> expenseList) throws SQLException{
 
+        //first we clear all data that may be in the list
+        expenseList.clear();
+
         preparedStatement = connection.prepareStatement("Select * FROM expenses");
         resultSet = preparedStatement.executeQuery();
 
@@ -136,6 +141,9 @@ public class InitializeData {
     //populate DebtPayments List with data from Debt_Payments Table in Database
     //@Params DebtPayments LinkedList
     private void initializeDebtPayments(LinkedList<DebtPayments> debtPaymentsList) throws SQLException{
+
+        //first we clear all data that may be in the list
+        debtPaymentsList.clear();
 
         preparedStatement = connection.prepareStatement("Select * FROM debt_payments");
         resultSet = preparedStatement.executeQuery();
@@ -160,6 +168,9 @@ public class InitializeData {
     //@Params Savings LinkedList
     private void initializeSavings(LinkedList<Savings> savingsList) throws SQLException{
 
+        //first we clear all data that may be in the list
+        savingsList.clear();
+
         preparedStatement = connection.prepareStatement("Select * FROM savings");
         resultSet = preparedStatement.executeQuery();
 
@@ -179,6 +190,9 @@ public class InitializeData {
     //populate CustomGoals List with data from CustomGoals Table in Database
     //@Params CustomGoals LinkedList
     private void initializeCustomGoals(LinkedList<CustomGoals> customGoalsList) throws SQLException{
+
+        //first we clear all data that may be in the list
+        customGoalsList.clear();
 
         preparedStatement = connection.prepareStatement("Select * FROM custom_goals");
         resultSet = preparedStatement.executeQuery();
@@ -202,6 +216,9 @@ public class InitializeData {
     //@Params accountSummary LinkedList
     private void initializeAccountSummary(LinkedList<AccountSummary> accountSummariesList) throws SQLException{
 
+        //first we clear all data that may be in the list
+        accountSummariesList.clear();
+
         preparedStatement = connection.prepareStatement("Select * FROM accountsummary");
         resultSet = preparedStatement.executeQuery();
 
@@ -223,6 +240,9 @@ public class InitializeData {
     //@Params user_income LinkedList
     private void initializeUserIncome(LinkedList<Users_Income> users_incomesList) throws SQLException{
 
+        //first we clear all data that may be in the list
+        users_incomesList.clear();
+
         preparedStatement = connection.prepareStatement("Select * FROM user_income");
         resultSet = preparedStatement.executeQuery();
 
@@ -240,6 +260,9 @@ public class InitializeData {
     //populate user_expenses List with data from user_expenses LookUp Table in Database
     //@Params user_expenses LinkedList
     private void initializeUserExpenses(LinkedList<User_Expenses> users_expensesList) throws SQLException{
+
+        //first we clear all data that may be in the list
+        users_expensesList.clear();
 
         preparedStatement = connection.prepareStatement("Select * FROM user_expenses");
         resultSet = preparedStatement.executeQuery();
@@ -259,6 +282,9 @@ public class InitializeData {
     //@Params user_debtPayments LinkedList
     private void initializeUserDebtPayments(LinkedList<User_DebtPayments> users_debtPaymentsList) throws SQLException{
 
+        //first we clear all data that may be in the list
+        users_debtPaymentsList.clear();
+
         preparedStatement = connection.prepareStatement("Select * FROM user_debt_payments");
         resultSet = preparedStatement.executeQuery();
 
@@ -276,6 +302,9 @@ public class InitializeData {
     //populate user_savings List with data from user_savings LookUp Table in Database
     //@Params user_savings LinkedList
     private void initializeUserSavings(LinkedList<User_Savings> users_savingsList) throws SQLException{
+
+        //first we clear all data that may be in the list
+        users_savingsList.clear();
 
         preparedStatement = connection.prepareStatement("Select * FROM user_savings");
         resultSet = preparedStatement.executeQuery();
@@ -295,6 +324,9 @@ public class InitializeData {
     //@Params user_custom_goals LinkedList
     private void initializeUserCustomGoals(LinkedList<User_CustomGoals> users_custom_goalsList) throws SQLException{
 
+        //first we clear all data that may be in the list
+        users_custom_goalsList.clear();
+
         preparedStatement = connection.prepareStatement("Select * FROM user_custom_goals");
         resultSet = preparedStatement.executeQuery();
 
@@ -312,6 +344,9 @@ public class InitializeData {
     //populate user_accountSummary List with data from user_accountSummary LookUp Table in Database
     //@Params user_accountSummary LinkedList
     private void initializeUserAccountSummary(LinkedList<User_AccountSummary> users_accountSummaryList) throws SQLException{
+
+        //first we clear all data that may be in the list
+        users_accountSummaryList.clear();
 
         preparedStatement = connection.prepareStatement("Select * FROM user_accountsummary");
         resultSet = preparedStatement.executeQuery();

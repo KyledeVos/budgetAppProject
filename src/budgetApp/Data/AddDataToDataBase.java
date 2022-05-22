@@ -24,7 +24,7 @@ public class AddDataToDataBase {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //create connection to dataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=testing&password=fake&useSSL=false");
 
         } catch(SQLException e) {
             System.out.println("Could not connect to dataBase");
@@ -38,8 +38,7 @@ public class AddDataToDataBase {
 
     //Method to add new user to database
     //@params Strings user: name, last_name and email;
-    //@returns user_id after addition of user for addition to linkedList
-    public int addUser(String first_name, String last_name, String email){
+    public void addUser(String first_name, String last_name, String email){
 
         int user_id = 0;
 
@@ -49,15 +48,6 @@ public class AddDataToDataBase {
             preparedStatement.setString(2, last_name);
             preparedStatement.setString(3, email);
             preparedStatement.executeUpdate();
-
-            //get id of new_user
-            preparedStatement = connection.prepareStatement("SELECT * FROM users ORDER BY id DESC LIMIT 1");
-            resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                user_id = resultSet.getInt("id");
-            }
-
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
@@ -70,15 +60,14 @@ public class AddDataToDataBase {
             }
         }
 
-        return user_id;
     }
 
     //Method to add new incomes to database and update user_income table
     //@params user_id source_name, amount, payment_date, payment_interval, notes
-    //@returns income_id after addition of income for addition to linkedList
-    public int addIncome(int user_id, String source_name, double amount, String payment_date, String payment_interval, String notes){
+    public void addIncome(int user_id, String source_name, double amount, String payment_date, String payment_interval,
+                          String notes){
 
-        //id of new income after it is added for return to add income to linkedList
+        //id of new income for addition to lookUp Table
         int income_id = 0;
 
         try {
@@ -112,15 +101,13 @@ public class AddDataToDataBase {
             }
         }
 
-        return income_id;
     }
 
     //Method to add new expenses to database and update user_expense table
     //@params user_id, type_category, paid_to, amount, payment_date, description, notes
-    //@returns expense_id after addition of expense for addition to linkedList
-    public int addExpenses(int user_id, String type_category, String paid_to,  double amount, String payment_date, String description, String notes){
+    public void addExpenses(int user_id, String type_category, String paid_to,  double amount, String payment_date, String description, String notes){
 
-        //id of new expense after it is added for return to add expense to linkedList
+        //id of new expense for addition to lookUp Table
         int expense_id = 0;
 
         try {
@@ -155,17 +142,15 @@ public class AddDataToDataBase {
             }
         }
 
-        return expense_id;
     }
 
 
     //Method to add new debt_payments to database and update user_debt_payments table
     //@params user_id type_category, paid_to, amount, payment_date, end_date, total_owed, interest, notes
-    //@returns debt_payment_id after addition of debt_payment for addition to linkedList
-    public int addDebtExpenses(int user_id, String type_category, String paid_to,  double amount, String payment_date, String end_date, double total_owed
+    public void addDebtExpenses(int user_id, String type_category, String paid_to,  double amount, String payment_date, String end_date, double total_owed
                                 , double interest, String notes){
 
-        //id of new debt_payments after it is added for return to add debt_payment to linkedList
+        //id of new debt_payments for addition to lookUp Table
         int debt_payments_id = 0;
 
         try {
@@ -205,15 +190,14 @@ public class AddDataToDataBase {
                 e.printStackTrace();
             }
         }
-        return debt_payments_id;
     }
 
 
     //Method to add new savings to database and update user_savings table
     //@params user_id, saved_location, amount, saved_date, notes
-    //@returns savings_id after addition of savings for addition to linkedList
-    public int addSavings(int user_id, String saved_location, double amount, String saved_date, String notes){
+    public void addSavings(int user_id, String saved_location, double amount, String saved_date, String notes){
 
+        //id of new savings for addition to lookUp Table
         int savings_id = 0;
 
         try {
@@ -247,16 +231,15 @@ public class AddDataToDataBase {
             }
         }
 
-        return savings_id;
     }
 
 
     //Method to add new custom_goal to database and update user_custom_goals table
     //@params user_id, description, saved_location, amount, saved_date, total_desired, final_date, notes
-    //@returns custom_goal_id after addition of custom_goal for addition to linkedList
-    public int addCustomGoal(int user_id, String description, String saved_location,  double amount, String saved_date, double total_desired,
+    public void addCustomGoal(int user_id, String description, String saved_location,  double amount, String saved_date, double total_desired,
                               String final_date, String notes){
 
+        //id of new custom_goal for addition to lookUp Table
         int custom_goals_id = 0;
 
         try {
@@ -291,14 +274,14 @@ public class AddDataToDataBase {
             }
         }
 
-        return custom_goals_id;
     }
 
 
+    //HELPER METHOD.
     //method to return id of last element in table
     //@param name of table in data_base
     //@return int id of last element in table
-    public int idOfLastElement(String tableName){
+    private int idOfLastElement(String tableName){
 
         int id = 0;
 
