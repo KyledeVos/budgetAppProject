@@ -1,6 +1,5 @@
 package budgetApp.Controllers;
 
-import budgetApp.Data.InitializeData;
 import budgetApp.Model.*;
 
 import java.util.LinkedList;
@@ -24,9 +23,6 @@ public class LinkedListsClass {
     LinkedList<User_CustomGoals> user_customGoals;
     LinkedList<User_AccountSummary> user_accountSummaries;
 
-    //create initializeData Object to copy data from database to each LinkedList
-    InitializeData initializeData;
-
     public LinkedListsClass() {
 
         //initialize LinkedLists
@@ -44,20 +40,11 @@ public class LinkedListsClass {
         user_customGoals = new LinkedList<>();
         user_accountSummaries = new LinkedList<>();
 
-        //initialize initializeData Object
-        initializeData = new InitializeData();
-
-        //call method from Data Package in InitializeData Class to populate each linkedList with all
-        //data from database
-        initializeData.initializeFromDatabase(user, incomes, expenses, debtPayments, savings, customGoals, accountSummaries,
-                users_incomes, user_expenses, user_debtPayments,user_savings, user_customGoals, user_accountSummaries);
-
     }
 
 
     //Testing Method to check population of all LinkedLists from DataBase
     public void printOutDatabase(){
-
 
         for(Users test: user){
             System.out.println(test.toString());

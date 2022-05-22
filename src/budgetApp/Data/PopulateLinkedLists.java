@@ -35,7 +35,7 @@ public class InitializeData {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //create connection to dataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=testing&password=fake&useSSL=false");
 
             //Call Each Method below that initializes a unique linked list of each Model Object Type
             initializeUsers(userList);
