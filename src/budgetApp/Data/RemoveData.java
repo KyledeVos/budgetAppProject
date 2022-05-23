@@ -20,7 +20,7 @@ public class RemoveData {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //create connection to dataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=testing&password=fake&useSSL=false");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
 
             preparedStatement = null;
             resultSet = null;
@@ -76,7 +76,44 @@ public class RemoveData {
         return false;
     }
 
-    //remove an income from the database
+    //remove row from desired table
+    //@param id of row
+    //@param table_name in database
+    //@return false if id does not exist in table, return true if one or more rows was affected
+    //to show removal, false if none were affected
+    public boolean removeEntry(int id, String table_name){
+        if(!search(id, table_name)){
+            return false;
+        }
+
+        int affectedRows = 0;
+
+        try {
+            //at this point we know the id does exist in the desired table and can simply remove it
+            preparedStatement = connection.prepareStatement("DELETE FROM " + table_name + " WHERE id = " + id);
+            affectedRows = preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try{
+                preparedStatement.close();
+                resultSet.close();
+                connection.close();
+            }catch(SQLException e){
+                e.printStackTrace();
+            }
+
+        }
+
+        //if more than one row was effected (removed), return true
+        if(affectedRows > 0){
+            return true;
+        }else {
+            //no rows were affected meaning removal not done
+            return false;
+        }
+
+    }
 
 
     //HELPER METHOD
