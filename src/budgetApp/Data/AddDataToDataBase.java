@@ -24,7 +24,7 @@ public class AddDataToDataBase {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //create connection to dataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=testing&password=fake&useSSL=false");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
 
         } catch(SQLException e) {
             System.out.println("Could not connect to dataBase");
@@ -38,7 +38,8 @@ public class AddDataToDataBase {
 
     //Method to add new user to database
     //@params Strings user: name, last_name and email;
-    public void addUser(String first_name, String last_name, String email){
+    //returns id of new_user
+    public int addUser(String first_name, String last_name, String email){
 
         int user_id = 0;
 
@@ -48,6 +49,8 @@ public class AddDataToDataBase {
             preparedStatement.setString(2, last_name);
             preparedStatement.setString(3, email);
             preparedStatement.executeUpdate();
+
+            user_id = idOfLastElement("users");
 
         } catch(SQLException e){
             System.out.println(e.getMessage());
@@ -59,6 +62,8 @@ public class AddDataToDataBase {
                 e.printStackTrace();
             }
         }
+
+        return user_id;
 
     }
 
