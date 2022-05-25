@@ -163,7 +163,7 @@ public class AddData {
 
     //add a new debt_payment to the database using AddDataToDataBase Class
     //@param user_id , Scanner object
-    public void addDebtExpense(int userId, Scanner scanner){
+    public void addNewDebtExpense(int userId, Scanner scanner){
 
         //AddDataToDataBase object to add new debtPayment to database
         AddDataToDataBase addDataToDataBase = new AddDataToDataBase();
@@ -195,18 +195,15 @@ public class AddData {
 
         //AMOUNT
         //--------------------------
-        //for addition of amount we must make sure the user has entered a numerical value
         amount = validateUserInput.getAmountValue("Please enter amount. For decimals please use a comma \',\':");
 
         //paymentDate
         //--------------------------
-        //addition of paymentDate must be validated to ensure date is in correct format
         System.out.println("\nDate of Payment");
         paymentDate = validateUserInput.createAndValidateDate();
 
         //endDate
         //--------------------------
-        //addition of endDate must be validated to ensure date is in correct format
         System.out.println("\nExpected end date for Debt Payments");
         endDate = validateUserInput.createAndValidateDate();
 
@@ -229,10 +226,117 @@ public class AddData {
             notes = hold;
         }
 
-
         //Call AddDebtPayment method in to add new debt payment to database
         addDataToDataBase.addDebtExpenses(userId, typeCategory, paidTo, amount,
                 paymentDate, endDate, totalOwed, interest, notes);
+
+    }
+
+    //add a new savings to the database using AddDataToDataBase Class
+    //@param user_id , Scanner object
+    public void addNewSavings(int userId, Scanner scanner){
+
+        //AddDataToDataBase object to add new debtPayment to database
+        AddDataToDataBase addDataToDataBase = new AddDataToDataBase();
+
+        //savings information to be passed to database
+        String savedLocation;
+        double amount = 0;
+        String savedDate;
+        String notes ="";
+
+        System.out.println("---------------------");
+        System.out.println("Addition of new Savings\n");
+
+        //no restrictions on savedLocation
+        System.out.println("Please enter the saved location for new Savings eg) bank, piggy-bank, savings account, etc.");
+        savedLocation = scanner.nextLine();
+        System.out.println();
+
+        //AMOUNT
+        //--------------------------
+        amount = validateUserInput.getAmountValue("Please enter amount. For decimals please use a comma \',\':");
+
+        //savedDate
+        //--------------------------
+        System.out.println("\nDate of Savings");
+        savedDate = validateUserInput.createAndValidateDate();
+
+        //Additional Notes
+        //--------------------------
+        System.out.println("\nPlease enter any additional notes to accompany this savings.");
+        System.out.println("If you do not wish to add any, please enter \'0\'");
+        String hold = scanner.nextLine();
+        if(!hold.equals("0")){
+            notes = hold;
+        }
+
+        //Call AddSavings method in to add new savings to database
+        addDataToDataBase.addSavings(userId, savedLocation, amount, savedDate, notes);
+
+    }
+
+
+    //add a new customGoal to the database using AddDataToDataBase Class
+    //@param user_id , Scanner object
+    public void addNewCustomGoal(int userId, Scanner scanner){
+
+        //AddDataToDataBase object to add new debtPayment to database
+        AddDataToDataBase addDataToDataBase = new AddDataToDataBase();
+
+        //customGoal information to be passed to database
+        String description;
+        String savedLocation;
+        double amount = 0;
+        String savedDate;
+        double totalDesired;
+        String finalDate;
+        String notes = "";
+
+        System.out.println("---------------------");
+        System.out.println("Addition of new CustomGoal\n");
+
+        //Description of Goal
+        System.out.println("Please enter a short description to identify your custom Goal");
+        description = scanner.nextLine();
+        System.out.println();
+
+
+        //SavedLocation
+        System.out.println("Please enter the saved location for new custom goal eg) bank, piggy-bank, savings account, etc.");
+        savedLocation = scanner.nextLine();
+        System.out.println();
+
+        //AMOUNT
+        //--------------------------
+        amount = validateUserInput.getAmountValue("Please enter amount. For decimals please use a comma \',\':");
+
+        //savedDate
+        //--------------------------
+        System.out.println("\nDate of saving for custom goal");
+        savedDate = validateUserInput.createAndValidateDate();
+
+        //total desired
+        //--------------------------
+        totalDesired = validateUserInput.getAmountValue("Please desired total to reach goal. For decimals please use a comma \',\':");
+
+        //finalDate
+        //--------------------------
+        System.out.println("\nDate at which goal is expected to be reached");
+        finalDate = validateUserInput.createAndValidateDate();
+
+        //Additional Notes
+        //--------------------------
+        System.out.println("\nPlease enter any additional notes to accompany this custom goal.");
+        System.out.println("If you do not wish to add any, please enter \'0\'");
+        String hold = scanner.nextLine();
+        if(!hold.equals("0")){
+            notes = hold;
+        }
+
+        //Call AddCustomGoals method in to add new savings to database
+        addDataToDataBase.addCustomGoal(userId, description, savedLocation, amount,
+                savedDate, totalDesired, finalDate, notes);
 
     }
 
