@@ -43,27 +43,32 @@ public class AppClass {
         }
 
 
+        //TEST
+        System.out.println("\nTEST\n");
+        AddData addData = new AddData();
+        addData.addNewIncome(userId, scanner);
+
 
         //create infinite loop to cycle through menu options until user selects 'exit'
-        while(!quit){
-
-
-            boolean hasInt = scanner.hasNextInt();
-
-            //if user enters an int value, menuChoiceMethod() Evaluated
-            if(hasInt){
-                int menuChoice = scanner.nextInt();
-                quit = mainMenuChoice(menuChoice);
-            } else {
-                //occurs if user did not enter an integer
-                System.out.println("Invalid input. Please enter valid number between 1 and 5\n");
-                //printMainMenu();
-            }
-
-            //clear scanner input
-            scanner.nextLine();
-
-        }
+//        while(!quit){
+//
+//
+//            boolean hasInt = scanner.hasNextInt();
+//
+//            //if user enters an int value, menuChoiceMethod() Evaluated
+//            if(hasInt){
+//                int menuChoice = scanner.nextInt();
+//                quit = mainMenuChoice(menuChoice);
+//            } else {
+//                //occurs if user did not enter an integer
+//                System.out.println("Invalid input. Please enter valid number between 1 and 5\n");
+//                //printMainMenu();
+//            }
+//
+//            //clear scanner input
+//            scanner.nextLine();
+//
+//        }
 
         //finally, close scanner at the end
         scanner.close();
