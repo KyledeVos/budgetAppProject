@@ -45,10 +45,10 @@ public class AddData {
     //@param user_id , Scanner object
     public void addNewIncome(int userId, Scanner scanner){
 
-        //AddDataToDataBase object to add new user to database
+        //AddDataToDataBase object to add new income to database
         AddDataToDataBase addDataToDataBase = new AddDataToDataBase();
 
-        //income information to be passed to
+        //income information to be passed to database
         String sourceName;
         double amount = 0;
         String paymentDate;
@@ -107,6 +107,204 @@ public class AddData {
                 paymentInterval, notes);
 
     }
+
+
+    //add a new expense to the database using AddDataToDataBase Class
+    //@param user_id, Scanner object
+    public void addNewExpense(int userId, Scanner scanner){
+
+        //AddDataToDataBase object to add new expense to database
+        AddDataToDataBase addDataToDataBase = new AddDataToDataBase();
+
+        //expense information to be passed to database
+        String typeCategory;
+        String paidTo;
+        double amount = 0;
+        String paymentDate;
+        String description = "";
+        String notes = "";
+
+        //no restrictions on type_category
+        System.out.println("---------------------");
+        System.out.println("Addition of new Expense\n");
+        System.out.println("Please enter the Type or Category for expense eg) petrol, dinner, groceries, etc.");
+        typeCategory = scanner.nextLine();
+        System.out.println();
+
+        //no restrictions on paid to
+        System.out.println("\nPlease enter the name of the person or business this is paid to");
+        paidTo = scanner.nextLine();
+        System.out.println();
+
+        //AMOUNT
+        //--------------------------
+        //for addition of amount we must make sure the user has entered a numerical value
+        boolean loop = true;
+        System.out.println();
+        while(loop){
+
+            System.out.println("Please enter amount. For decimals please use a comma \',\':");
+            boolean hasDouble = scanner.hasNextDouble();
+
+            if(hasDouble){
+                amount = scanner.nextDouble();
+                loop = false;
+            } else {
+                System.out.println("Invalid Input Received");
+            }
+            scanner.nextLine();
+        }
+
+
+        //paymentDate
+        //--------------------------
+        //addition of paymentDate must be validated to ensure date is in correct format
+        System.out.println("\nDate of Payment");
+        paymentDate = createAndValidateDate(scanner);
+
+        //Description - optional
+        //--------------------------
+        System.out.println("\nPlease enter a description of the expense if you wish to.");
+        System.out.println("If you do not wish to add anything, please enter \'0\'");
+        String hold = scanner.nextLine();
+        if(!hold.equals("0")){
+            description = hold;
+        }
+
+        //Additional Notes
+        //--------------------------
+        System.out.println("\nPlease enter any additional notes to accompany this expense.");
+        System.out.println("If you do not wish to add any, please enter \'0\'");
+        hold = scanner.nextLine();
+        if(!hold.equals("0")){
+            notes = hold;
+        }
+
+        //Call AddExpense method in to add new expense to database
+        addDataToDataBase.addExpenses(userId, typeCategory, paidTo, amount,
+                paymentDate, description, notes);
+
+    }
+
+    //add a new debt_payment to the database using AddDataToDataBase Class
+    //@param user_id , Scanner object
+    public void addDebtExpense(int userId, Scanner scanner){
+
+        //AddDataToDataBase object to add new debtPayment to database
+        AddDataToDataBase addDataToDataBase = new AddDataToDataBase();
+
+        //debtPayment information to be passed to database
+        String typeCategory;
+        String paidTo;
+        double amount = 0;
+        String paymentDate;
+        String endDate;
+        double totalOwed = 0;
+        double interest = 0;
+        String notes = "";
+
+
+        System.out.println("---------------------");
+        System.out.println("Addition of new Debt Payment\n");
+
+        //no restrictions on type_category
+        System.out.println("Please enter the Type or Category for Debt Payment eg) mortgage, vehicle payment, account, etc.");
+        typeCategory = scanner.nextLine();
+        System.out.println();
+
+        //no restrictions on paid to
+        System.out.println("\nPlease enter the name of the person or business this is paid to");
+        paidTo = scanner.nextLine();
+        System.out.println();
+
+
+        //AMOUNT
+        //--------------------------
+        //for addition of amount we must make sure the user has entered a numerical value
+        boolean loop = true;
+        System.out.println();
+        while(loop){
+
+            System.out.println("Please enter amount. For decimals please use a comma \',\':");
+            boolean hasDouble = scanner.hasNextDouble();
+
+            if(hasDouble){
+                amount = scanner.nextDouble();
+                loop = false;
+            } else {
+                System.out.println("Invalid Input Received");
+            }
+            scanner.nextLine();
+        }
+
+
+        //paymentDate
+        //--------------------------
+        //addition of paymentDate must be validated to ensure date is in correct format
+        System.out.println("\nDate of Payment");
+        paymentDate = createAndValidateDate(scanner);
+
+        //endDate
+        //--------------------------
+        //addition of endDate must be validated to ensure date is in correct format
+        System.out.println("\nExpected end date for Debt Payments");
+        endDate = createAndValidateDate(scanner);
+
+        //totalOwed
+        //--------------------------
+        //for addition of totalOwed we must make sure the user has entered a numerical value
+        loop = true;
+        System.out.println();
+        while(loop){
+
+            System.out.println("Please enter total amount still owing for this Debt Payment. For decimals please use a comma \',\':");
+            boolean hasDouble = scanner.hasNextDouble();
+
+            if(hasDouble){
+                totalOwed = scanner.nextDouble();
+                loop = false;
+            } else {
+                System.out.println("Invalid Input Received");
+            }
+            scanner.nextLine();
+        }
+
+        //interest
+        //--------------------------
+        //for addition of interest we must make sure the user has entered a numerical value
+        loop = true;
+        System.out.println();
+        while(loop){
+
+            System.out.println("Please enter interest amount charged for this payment. For decimals please use a comma \',\':");
+            boolean hasDouble = scanner.hasNextDouble();
+
+            if(hasDouble){
+                interest = scanner.nextDouble();
+                loop = false;
+            } else {
+                System.out.println("Invalid Input Received");
+            }
+            scanner.nextLine();
+        }
+
+        //Additional Notes
+        //--------------------------
+        System.out.println("\nPlease enter any additional notes to accompany this debt payment.");
+        System.out.println("If you do not wish to add any, please enter \'0\'");
+        String hold = scanner.nextLine();
+        if(!hold.equals("0")){
+            notes = hold;
+        }
+
+
+        //Call AddDebtPayment method in to add new debt payment to database
+        addDataToDataBase.addDebtExpenses(userId, typeCategory, paidTo, amount,
+                paymentDate, endDate, totalOwed, interest, notes);
+
+    }
+
+
 
     //HELPER METHOD
     //check if an entered date is valid
