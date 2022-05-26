@@ -12,6 +12,42 @@ public class ValidateUserInput {
         this.scanner = scanner;
     }
 
+    public int getMenuChoice(int maxOption){
+
+        //for desired menu option, we must make sure the user has entered a valid int value
+        int value = 1;
+
+        //boolean to loop until valid input is given
+        boolean loop = true;
+
+        //create infinite loop to cycle through menu options until user selects 'exit'
+        while(loop){
+
+            boolean hasInt = scanner.hasNextInt();
+
+            //if user enters an int value, menuChoiceMethod() Evaluated
+            if(hasInt){
+                value = scanner.nextInt();
+                if(value>maxOption || value<1){
+                    System.out.println("Invalid input. Please enter valid number between 1 and " + maxOption);
+                } else {
+                    loop = false;
+                }
+            } else {
+                //occurs if user did not enter an integer
+                System.out.println("Input is not a number. Please enter valid number between 1 and " + maxOption);
+            }
+
+            //clear scanner input
+            scanner.nextLine();
+
+        }
+
+        return value;
+
+    }
+
+
     //check if a user entered numerical value is valid
     //@param display message before user enters value
     //@return double amount
@@ -29,8 +65,13 @@ public class ValidateUserInput {
             boolean hasDouble = scanner.hasNextDouble();
 
             if(hasDouble){
+
                 amount = scanner.nextDouble();
-                loop = false;
+                if(amount>0) {
+                    loop = false;
+                } else{
+                    System.out.println("Invalid Input Received");
+                }
             } else {
                 System.out.println("Invalid Input Received");
             }
@@ -57,7 +98,7 @@ public class ValidateUserInput {
         //Get Year
         while(loop){
 
-            System.out.println("Please enter Year of Payment");
+            System.out.println("Please enter Year");
             boolean hasInt = scanner.hasNextInt();
 
             if(hasInt){
@@ -80,7 +121,7 @@ public class ValidateUserInput {
 
         while(loop){
 
-            System.out.println("Please enter Month of Payment as 1 - 12");
+            System.out.println("Please enter Month as 1 - 12");
             boolean hasInt = scanner.hasNextInt();
 
             if(hasInt){
