@@ -9,6 +9,9 @@ import java.util.Scanner;
 //Controller Class for Entire App
 public class AppClass {
 
+    //user_id for current user
+    static int userId = 0;
+
 
 
     public static void main(String[] args) {
@@ -16,8 +19,7 @@ public class AppClass {
         //create scanner object used by program
         Scanner scanner = new Scanner(System.in);
 
-        //user_id for current user
-        int userId = 0;
+
 
         System.out.println("Welcome to your Custom Budget App");
 
@@ -152,21 +154,20 @@ public class AppClass {
 
         //variable to hold user choice
         int choice = validateUserInput.getMenuChoice(3);
-        customizeEntryChoice(choice);
+        customizeEntryChoice(choice, scanner);
 
         //must return true to allow while loop to continue in main menu
         return true;
     }
 
-    private static void customizeEntryChoice(int choice){
-
+    private static void customizeEntryChoice(int choice, Scanner scanner){
 
         switch(choice){
 
             case 1:
                 System.out.println("\n------------------------");
                 System.out.println("Add new Entry Menu");
-                System.out.println("Additional Menu Options In development");
+                addNewEntry(scanner);
                 break;
 
             case 2:
@@ -187,6 +188,64 @@ public class AppClass {
         }
 
     }
+
+    ///////////////////////////////////////////////
+    //Customize Entry Menu - Add New Entry
+
+    public static void printAddEntryMenu(){
+        System.out.println("\nPlease select a menu option below by entering the number next to your choice\n");
+        System.out.println("1) Add new User ");
+        System.out.println("2) Add new Income ");
+        System.out.println("3) Add new Expense ");
+        System.out.println("4) Add new Debt Payment ");
+        System.out.println("5) Add new Savings ");
+        System.out.println("6) Add new Custom Goal - Savings ");
+    }
+
+    public static void addNewEntry(Scanner scanner){
+        System.out.println("\n------------------------");
+        printAddEntryMenu();
+
+        ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
+
+        //variable to hold user choice
+        int choice = validateUserInput.getMenuChoice(6);
+        addNewEntryChoice(choice, scanner);
+
+    }
+
+    public static void addNewEntryChoice(int choice, Scanner scanner){
+
+        AddData addData = new AddData(scanner);
+
+        switch(choice){
+            case 1:
+                userId = addData.addNewUser(scanner, userId);
+                break;
+
+            case 2:
+                addData.addNewIncome(userId, scanner);
+                break;
+
+            case 3:
+                addData.addNewExpense(userId, scanner);
+                break;
+
+            case 4:
+                addData.addNewDebtExpense(userId, scanner);
+                break;
+
+            case 5:
+                addData.addNewSavings(userId, scanner);
+                break;
+
+            case 6:
+                addData.addNewCustomGoal(userId, scanner);
+                break;
+        }
+
+    }
+
 
 
 
