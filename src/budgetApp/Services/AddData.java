@@ -45,7 +45,54 @@ public class AddData {
         System.out.println("\nUser: " + firstName + " " + lastName + " with email: " + email + " has been added to database");
         System.out.println("---------------------");
 
+
+
         return userId;
+    }
+
+    //overloaded method when adding new User from customizeEntriesMenu
+    public int addNewUser(Scanner scanner, int currentUser_id){
+
+        //AddDataToDataBase object to add new user to database
+        AddDataToDataBase addDataToDataBase = new AddDataToDataBase();
+
+        //user information to be passed to addUser Method
+        String firstName;
+        String lastName;
+        String email;
+
+        //userId of new user to return to calling method
+        int userId;
+
+        System.out.println("---------------------");
+        System.out.println("Addition of new User");
+
+        System.out.println("Please enter first name of new user:");
+        firstName = scanner.nextLine();
+
+        System.out.println("\nPlease enter last name of new user");
+        lastName = scanner.nextLine();
+
+        System.out.println("\nPlease enter email address of new user");
+        email = scanner.nextLine();
+
+        int tempID = addDataToDataBase.addUser(firstName, lastName, email);
+
+        System.out.println("\nUser: " + firstName + " " + lastName + " with email: " + email + " has been added to database");
+        System.out.println("---------------------");
+
+        System.out.println("\n Do you want to switch to new user?");
+        System.out.println("Enter \'y\' for yes or \'n\' for no");
+        String input = scanner.nextLine();
+
+        if (input.equals("y")) {
+            System.out.println("");
+
+            currentUser_id = tempID;
+            System.out.println("User changed");
+
+        }
+        return currentUser_id;
     }
 
     //add a new income to the database using AddDataToDataBase Class
