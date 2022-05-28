@@ -1,7 +1,8 @@
 package budgetApp.Controllers;
 
-import budgetApp.Data.ValidateData;
+import budgetApp.Data.ValidateDataFromDataBase;
 import budgetApp.Services.AddData;
+import budgetApp.Services.RemoveData;
 import budgetApp.Services.ValidateUserInput;
 
 import java.util.Scanner;
@@ -25,7 +26,7 @@ public class AppClass {
 
         //first we check if there are any users in the database
 
-        ValidateData validateData = new ValidateData();
+        ValidateDataFromDataBase validateData = new ValidateDataFromDataBase();
         boolean noUsers = validateData.emptyUserTable();
 
         //if user table is not empty, then we want app User to select user from the database
@@ -173,7 +174,7 @@ public class AppClass {
             case 2:
                 System.out.println("\n------------------------");
                 System.out.println("Remove Entry Menu");
-                System.out.println("Additional Menu Options In development");
+                removeEntry(scanner);
                 break;
 
             case 3:
@@ -192,6 +193,7 @@ public class AppClass {
     ///////////////////////////////////////////////
     //Customize Entry Menu - Add New Entry
 
+    //method to print options of which type of data to add to database
     public static void printAddEntryMenu(){
         System.out.println("\nPlease select a menu option below by entering the number next to your choice\n");
         System.out.println("1) Add new User ");
@@ -202,6 +204,7 @@ public class AppClass {
         System.out.println("6) Add new Custom Goal - Savings ");
     }
 
+    //controlling method to print menu to user and add data
     public static void addNewEntry(Scanner scanner){
         System.out.println("\n------------------------");
         printAddEntryMenu();
@@ -214,6 +217,7 @@ public class AppClass {
 
     }
 
+    //method to accept users choice
     public static void addNewEntryChoice(int choice, Scanner scanner){
 
         AddData addData = new AddData(scanner);
@@ -245,6 +249,58 @@ public class AppClass {
         }
 
     }
+
+    ///////////////////////////////////////////////
+    //Customize Entry Menu - Remove Entry
+
+    public static void printRemoveEntryMenu(){
+        System.out.println("\nPlease select a menu option below by entering the number next to your choice\n");
+        System.out.println("1) Remove a User ");
+        System.out.println("2) Remove Income ");
+        System.out.println("3) Remove Expense ");
+        System.out.println("4) Remove Debt Payment ");
+        System.out.println("5) Remove Savings ");
+        System.out.println("6) Remove Custom Goal - Savings ");
+    }
+
+    public static void removeEntry(Scanner scanner){
+
+        System.out.println("\n------------------------");
+        printRemoveEntryMenu();
+
+        ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
+
+        //variable to hold user choice
+        int choice = validateUserInput.getMenuChoice(6);
+        removeEntryChoice(choice, scanner);
+
+
+
+    }
+
+    public static void removeEntryChoice(int choice, Scanner scanner){
+
+        RemoveData removeData = new RemoveData(scanner);
+
+        switch(choice){
+
+            case 1:
+                removeData.removeUser(scanner);
+                break;
+
+            case 2:
+                removeData.removeIncome(userId, scanner);
+                break;
+
+            default:
+                System.out.println("Invalid");
+                break;
+
+
+        }
+
+    }
+
 
 
 
