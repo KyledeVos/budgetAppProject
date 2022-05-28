@@ -14,9 +14,25 @@ public class PopulateLinkedLists {
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
+    private int userId;
 
-    public PopulateLinkedLists() {
-        this.connection = null;
+    public PopulateLinkedLists(int userId) {
+
+        this.userId = userId;
+
+        try {
+            //load the jdbc Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            //create connection to dataBase
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }catch(ClassNotFoundException e){
+            System.out.println("Driver not on class Path");
+        }
+
         this.preparedStatement = null;
         this.resultSet = null;
     }
@@ -26,12 +42,6 @@ public class PopulateLinkedLists {
     public void initializeFromDatabase(LinkedListsClass listsClass){
 
         try{
-
-            //load the jdbc Driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            //create connection to dataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=testing&password=fake&useSSL=false");
 
             //Call Each Method below that initializes a unique linked list of each Model Object Type
             initializeUsers(listsClass.getUser());
@@ -50,16 +60,65 @@ public class PopulateLinkedLists {
 
 
         }catch(SQLException exc){
-            System.out.println("Sql Exception Occured");
-        } catch(ClassNotFoundException exc){
-            System.out.println("Driver class not on ClassPath");
-        } finally {
+            System.out.println("Sql Exception Occurred");
+        }  finally {
             try{
                 preparedStatement.close();
                 resultSet.close();
                 connection.close();
             }catch(SQLException exc){
                 System.out.println("unable to close");
+            }
+        }
+
+
+    }
+
+    //method to display table content for removal of a row
+    //excludes users
+    //@param int menu option choice
+    public void displayTableForRowRemoval(int choice, LinkedListsClass listsClass){
+
+        //use user's choice to populate specific linkedList from database
+        try {
+
+            switch(choice) {
+
+                //1 - user wants to remove an income
+                case 1:
+                    initializeIncomes(listsClass.getIncomes());
+                    break;
+
+                case 2:
+                    initializeExpenses(listsClass.getExpenses());
+                    break;
+
+                case 3:
+                    initializeDebtPayments(listsClass.getDebtPayments());
+                    break;
+
+                case 4:
+                    initializeSavings(listsClass.getSavings());
+                    break;
+
+                case 5:
+                    initializeCustomGoals(listsClass.getCustomGoals());
+                    break;
+
+                default:
+                    System.out.println("Invalid");
+
+
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        } finally {
+            try{
+                resultSet.close();
+                preparedStatement.close();
+                connection.close();
+            }catch(SQLException e){
+                e.printStackTrace();
             }
         }
 
@@ -96,7 +155,8 @@ public class PopulateLinkedLists {
         //first we clear all data that may be in the list
         incomeList.clear();
 
-        preparedStatement = connection.prepareStatement("Select * FROM income");
+        preparedStatement = connection.prepareStatement("Select * FROM income JOIN user_income ON " +
+                "user_income.income_id = income.id JOIN users ON user_income.user_id = users.id WHERE user_id =   " + userId);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()){
@@ -120,7 +180,9 @@ public class PopulateLinkedLists {
         //first we clear all data that may be in the list
         expenseList.clear();
 
-        preparedStatement = connection.prepareStatement("Select * FROM expenses");
+        preparedStatement = connection.prepareStatement("Select * FROM expenses JOIN user_expenses ON " +
+                "user_expenses.expenses_id = expenses.id JOIN users ON user_expenses.user_id = users.id WHERE user_id =   " +
+                 userId);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()){
@@ -145,7 +207,9 @@ public class PopulateLinkedLists {
         //first we clear all data that may be in the list
         debtPaymentsList.clear();
 
-        preparedStatement = connection.prepareStatement("Select * FROM debt_payments");
+        preparedStatement = connection.prepareStatement("Select * FROM debt_payments JOIN user_debt_payments ON " +
+                "user_debt_payments.debt_payments_id = debt_payments.id JOIN users ON user_debt_payments.user_id = users.id " +
+                "WHERE user_id =   " + userId);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()){
@@ -171,7 +235,9 @@ public class PopulateLinkedLists {
         //first we clear all data that may be in the list
         savingsList.clear();
 
-        preparedStatement = connection.prepareStatement("Select * FROM savings");
+        preparedStatement = connection.prepareStatement("Select * FROM savings JOIN user_savings ON " +
+                "user_savings.savings_id = savings.id JOIN users ON user_savings.user_id = users.id WHERE user_id =   " +
+                userId);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()){
@@ -194,7 +260,10 @@ public class PopulateLinkedLists {
         //first we clear all data that may be in the list
         customGoalsList.clear();
 
-        preparedStatement = connection.prepareStatement("Select * FROM custom_goals");
+        preparedStatement = connection.prepareStatement("Select * FROM custom_goals JOIN user_custom_goals ON " +
+                "user_custom_goals.custom_goals_id = custom_goals.id JOIN users ON user_custom_goals.user_id = users.id " +
+                "WHERE user_id =   " +
+                userId);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()){
