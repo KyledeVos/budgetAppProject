@@ -85,23 +85,28 @@ public class PopulateLinkedLists {
             switch(choice) {
 
                 //1 - user wants to remove an income
+
                 case 1:
-                    initializeIncomes(listsClass.getIncomes());
+                    initializeUsers(listsClass.getUser());
                     break;
 
                 case 2:
-                    initializeExpenses(listsClass.getExpenses());
+                    initializeIncomes(listsClass.getIncomes());
                     break;
 
                 case 3:
-                    initializeDebtPayments(listsClass.getDebtPayments());
+                    initializeExpenses(listsClass.getExpenses());
                     break;
 
                 case 4:
-                    initializeSavings(listsClass.getSavings());
+                    initializeDebtPayments(listsClass.getDebtPayments());
                     break;
 
                 case 5:
+                    initializeSavings(listsClass.getSavings());
+                    break;
+
+                case 6:
                     initializeCustomGoals(listsClass.getCustomGoals());
                     break;
 

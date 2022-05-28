@@ -2,7 +2,7 @@ package budgetApp.Data;
 
 import java.sql.*;
 
-public class RemoveData {
+public class RemoveDataFromDatabase {
 
     //Create Connection, PreparedStatement and ResultSet Objects
     Connection connection = null;
@@ -12,7 +12,7 @@ public class RemoveData {
     //constructor used to initialize connection
     //closing of connection, preparedStatement and resultSet done by update and remove methods
     //search method is a helper method to these and does not close the connection, preparedStatement or resultSet
-    public RemoveData(){
+    public RemoveDataFromDatabase(){
 
         try{
 
@@ -81,8 +81,9 @@ public class RemoveData {
     //@param table_name in database
     //@return false if id does not exist in table, return true if one or more rows was affected
     //to show removal, false if none were affected
-    public boolean removeEntry(int id, String table_name){
-        if(!search(id, table_name)){
+    public boolean removeEntry(int userId, int id, String table_name){
+        if(!search(userId, id, table_name)){
+            System.out.println("Matching ID not found in database");
             return false;
         }
 
@@ -115,15 +116,43 @@ public class RemoveData {
 
     }
 
-
     //HELPER METHOD
-    //used to search for data entry in database
+    //used to search for user entry in database
     //@param id of element in linkedList, name of table to search in
     //@return true if row with matching id is found, false if not
     private boolean search(int id, String table_name){
 
         try {
             preparedStatement = connection.prepareStatement("SELECT * FROM " + table_name);
+            resultSet = preparedStatement.executeQuery();
+
+            //iterate through all rows to see if matching ID is found
+            while(resultSet.next()){
+                int row_id = resultSet.getInt("id");
+
+                if(row_id == id){
+                    return true;
+                }
+            }
+
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        //at this point no matching ID was found and false is returned
+        return false;
+
+    }
+
+    //HELPER METHOD
+    //used to search for data entry in database
+    //@param id of user, id of element in linkedList, name of table to search in
+    //@return true if row with matching id is found, false if not
+    private boolean search(int userId, int id, String table_name){
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT * FROM " + table_name + " JOIN user_" + table_name +
+                    " ON user_" + table_name + "." + table_name + "_id = " + table_name + ".id JOIN users " +
+            "ON user_" + table_name + ".user_id = users.id WHERE user_id = " + userId);
             resultSet = preparedStatement.executeQuery();
 
             //iterate through all rows to see if matching ID is found
