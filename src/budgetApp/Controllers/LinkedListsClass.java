@@ -42,6 +42,41 @@ public class LinkedListsClass {
 
     }
 
+    //used to print data in Income LinkedList
+    public void printIncome(){
+        for(Income copy: incomes){
+            System.out.println(copy.toString() + "\n");
+        }
+    }
+
+    //used to print data in Expenses Class
+    public void printExpenses(){
+        for(Expenses copy: expenses){
+            System.out.println(copy.toString()+ "\n");
+        }
+    }
+
+    //used to print data in Debt Payments LinkedList
+    public void printDebtPayments(){
+        for(DebtPayments copy : debtPayments){
+            System.out.println(copy.toString()+ "\n");
+        }
+    }
+
+    //used to print data in Savings LinkedList
+    public void printSavings(){
+        for(Savings copy : savings){
+            System.out.println(copy.toString()+ "\n");
+        }
+    }
+
+    //used to print data in CustomGoals LinkedList
+    public void printCustomGoals(){
+        for(CustomGoals copy : customGoals){
+            System.out.println(copy.toString()+ "\n");
+        }
+    }
+
 
     //Testing Method to check population of all LinkedLists from DataBase
     public void printOutDatabase(){
@@ -52,33 +87,23 @@ public class LinkedListsClass {
 
         System.out.println("\n-------------------\n");
 
-        for(Income copy: incomes){
-            System.out.println(copy.toString());
-        }
+        printIncome();
 
         System.out.println("\n-------------------\n");
 
-        for(Expenses copy: expenses){
-            System.out.println(copy.toString());
-        }
+        printExpenses();
 
         System.out.println("\n-------------------\n");
 
-        for(DebtPayments copy: debtPayments){
-            System.out.println(copy.toString());
-        }
+        printDebtPayments();
 
         System.out.println("\n-------------------\n");
 
-        for(Savings copy: savings){
-            System.out.println(copy.toString());
-        }
+        printSavings();
 
         System.out.println("\n-------------------\n");
 
-        for(CustomGoals copy: customGoals){
-            System.out.println(copy.toString());
-        }
+        printCustomGoals();
 
         System.out.println("\n-------------------\n");
 
