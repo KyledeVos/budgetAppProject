@@ -109,9 +109,10 @@ public class AddData {
         String paymentInterval;
         String notes = "";
 
-        //no restrictions on source name
         System.out.println("---------------------");
         System.out.println("Addition of new Income\n");
+
+        //no restrictions on source name
         System.out.println("Please enter the source name for income eg) Salary, gift, extra work, etc.");
         sourceName = scanner.nextLine();
         System.out.println();
