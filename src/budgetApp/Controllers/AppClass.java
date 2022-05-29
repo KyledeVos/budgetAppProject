@@ -112,7 +112,7 @@ public class AppClass {
                 break;
 
             case 3:
-                customizeEntriesMenu(scanner);
+                quit = customizeEntriesMenu(scanner);
                 break;
 
             case 4:
@@ -155,13 +155,12 @@ public class AppClass {
 
         //variable to hold user choice
         int choice = validateUserInput.getMenuChoice(3);
-        customizeEntryChoice(choice, scanner);
+        return customizeEntryChoice(choice, scanner);
 
-        //must return true to allow while loop to continue in main menu
-        return true;
+
     }
 
-    private static void customizeEntryChoice(int choice, Scanner scanner){
+    private static boolean customizeEntryChoice(int choice, Scanner scanner){
 
         switch(choice){
 
@@ -174,8 +173,7 @@ public class AppClass {
             case 2:
                 System.out.println("\n------------------------");
                 System.out.println("Remove Entry Menu");
-                removeEntry(scanner);
-                break;
+                return removeEntry(scanner);
 
             case 3:
                 System.out.println("\n------------------------");
@@ -188,6 +186,7 @@ public class AppClass {
                 break;
         }
 
+        return false;
     }
 
     ///////////////////////////////////////////////
@@ -263,7 +262,7 @@ public class AppClass {
         System.out.println("6) Remove Custom Goal - Savings ");
     }
 
-    public static void removeEntry(Scanner scanner){
+    public static boolean removeEntry(Scanner scanner){
 
         System.out.println("\n------------------------");
         printRemoveEntryMenu();
@@ -272,32 +271,46 @@ public class AppClass {
 
         //variable to hold user choice
         int choice = validateUserInput.getMenuChoice(6);
-        removeEntryChoice(choice, scanner);
-
-
+        return removeEntryChoice(choice, scanner);
 
     }
 
-    public static void removeEntryChoice(int choice, Scanner scanner){
+    public static boolean removeEntryChoice(int choice, Scanner scanner){
 
         RemoveData removeData = new RemoveData(scanner);
 
         switch(choice){
 
             case 1:
-                removeData.removeUser(scanner);
-                break;
+                return removeData.removeUser(userId, scanner);
 
             case 2:
                 removeData.removeIncome(userId, scanner);
+                break;
+
+            case 3:
+                removeData.removeExpense(userId, scanner);
+                break;
+
+            case 4:
+                removeData.removeDebtPayment(userId, scanner);
+                break;
+
+            case 5:
+                removeData.removeSavings(userId, scanner);
+                break;
+
+            case 6:
+                removeData.removeCustomGoal(userId, scanner);
                 break;
 
             default:
                 System.out.println("Invalid");
                 break;
 
-
         }
+
+        return false;
 
     }
 
