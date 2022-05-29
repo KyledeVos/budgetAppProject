@@ -37,24 +37,32 @@ public class RemoveDataFromDatabase {
     //remove a user from the database
     //@params id of user, initialize Database object to alter data in LinkedLists
     //@return true if user can be removed, false if user not found in database
-    public boolean removeUser(int id){
+    public boolean removeUser(int userId, int choice){
 
         int affectedRows = 1;
 
         //first check if desired user_id is in database users
-        if(!search(id, "users")){
+        if(!search(choice, "users")){
             return false;
         }
 
+        //if the chosen option does not equal the user's own ID, then the removal cannot be done
+        //as users can only delete their own data and no one else's
+        if(choice != userId){
+            System.out.println("Action Refused. You cannot delete another uses");
+            return false;
+        }
+
+        //at this point we know the user does exist and that they are deleting themselves and no one else
+
         try {
-            //at this point we know the user does exist
 
             //fist we want to use all look-up tables to delete all data associated with a user
-            clearUserData(id);
+            clearUserData(choice);
 
 
             //once all data associated with user has been deleted, we can delete the user
-            preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id =  " + id);
+            preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id =  " + choice);
             affectedRows = preparedStatement.executeUpdate();
 
         } catch(SQLException e){
@@ -175,8 +183,8 @@ public class RemoveDataFromDatabase {
 
     //HELPER METHOD to removeUser()
     //Extra Method that clears user linked data from all tables (income, expenses, etc)
-    //if user is deleted, then all data affiliated with that user in all tables must be deleted too
-    //this included all data in lookUp Tables
+    //if user is deleted, then all data affiliated with that user in all tables must be deleted too.
+    //this includes all data in lookUp Tables
     //@params user_id
     private void clearUserData(int user_id){
 

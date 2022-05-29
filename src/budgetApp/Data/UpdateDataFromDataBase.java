@@ -4,14 +4,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.*;
 
-public class UpdateData {
+public class UpdateDataFromDataBase {
 
     Connection connection;
     PreparedStatement preparedStatement;
     ResultSet resultSet;
 
 
-    public UpdateData() {
+    public UpdateDataFromDataBase() {
         this.connection = null;
         this.preparedStatement = null;
         resultSet = null;
