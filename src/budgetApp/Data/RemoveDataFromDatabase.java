@@ -20,7 +20,7 @@ public class RemoveDataFromDatabase {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //create connection to dataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=apptest&password=fake&useSSL=false");
 
             preparedStatement = null;
             resultSet = null;

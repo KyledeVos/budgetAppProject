@@ -23,7 +23,7 @@ public class UpdateDataFromDataBase {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //create Connection to DataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?...=apptest&password=...&useSSL=false");
 
         }catch(SQLException e){
             e.printStackTrace();
