@@ -354,6 +354,26 @@ public class AppClass {
                 updateData.updateUser(scanner);
                 break;
 
+            case 2:
+                updateData.updateIncome(scanner);
+                break;
+
+            case 3:
+                updateData.updateExpense(scanner);
+                break;
+
+            case 4:
+                updateData.updateDebtPayment(scanner);
+                break;
+
+            case 5:
+                updateData.updateSavings(scanner);
+                break;
+
+            case 6:
+                updateData.updateCustomGoal(scanner);
+                break;
+
             default:
                 System.out.println("Invalid");
                 break;
