@@ -23,7 +23,7 @@ public class UpdateDataFromDataBase {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             //create Connection to DataBase
-            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?...=apptest&password=...&useSSL=false");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/javabudgetapp?user=...&password=...&useSSL=false");
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -76,11 +76,11 @@ public class UpdateDataFromDataBase {
     //update an existing income
     //@params id of income, source_name, amount, payment_date, payment_interval, notes
     //@return true if row changed, false if not changed or id could not be found
-    public boolean updateIncome(int id, String source_name, double amount, String payment_date,
+    public boolean updateIncome(int userId, int id, String source_name, double amount, String payment_date,
                                 String payment_interval, String notes){
 
-        //first check that income exists in database
-        if(!search(id, "income")){
+        //first check that income exists in database matching those belonging to user
+        if(!search(userId, id, "income")){
             return false;
         }
 
@@ -313,6 +313,35 @@ public class UpdateDataFromDataBase {
 
         try {
             preparedStatement = connection.prepareStatement("SELECT * FROM " + table_name);
+            resultSet = preparedStatement.executeQuery();
+
+            //iterate through all rows to see if matching ID is found
+            while(resultSet.next()){
+                int row_id = resultSet.getInt("id");
+
+                if(row_id == id){
+                    return true;
+                }
+            }
+
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        //at this point no matching ID was found and false is returned
+        return false;
+
+    }
+
+    //HELPER METHOD
+    //used to search for data entry in database
+    //@param id of user, id of element in linkedList, name of table to search in
+    //@return true if row with matching id is found, false if not
+    public boolean search(int userId, int id, String table_name){
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT * FROM " + table_name + " JOIN user_" + table_name +
+                    " ON user_" + table_name + "." + table_name + "_id = " + table_name + ".id JOIN users " +
+                    "ON user_" + table_name + ".user_id = users.id WHERE user_id = " + userId);
             resultSet = preparedStatement.executeQuery();
 
             //iterate through all rows to see if matching ID is found
