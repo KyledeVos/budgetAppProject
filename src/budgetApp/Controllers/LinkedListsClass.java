@@ -43,6 +43,22 @@ public class LinkedListsClass {
     }
 
     //used to print data in Income LinkedList
+    public void printUsers(){
+        for(Users copy: user){
+            System.out.println(copy.toString() + "\n");
+        }
+    }
+
+    //print info for current user only
+    public void printCurrentUserInfo(int userid){
+        for(Users copy: user){
+            if(copy.getId() == userid){
+                System.out.println(copy.toString());
+            }
+        }
+    }
+
+    //used to print data in Income LinkedList
     public void printIncome(){
         for(Income copy: incomes){
             System.out.println(copy.toString() + "\n");

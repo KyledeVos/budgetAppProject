@@ -3,6 +3,7 @@ package budgetApp.Controllers;
 import budgetApp.Data.ValidateDataFromDataBase;
 import budgetApp.Services.AddData;
 import budgetApp.Services.RemoveData;
+import budgetApp.Services.UpdateData;
 import budgetApp.Services.ValidateUserInput;
 
 import java.util.Scanner;
@@ -13,14 +14,10 @@ public class AppClass {
     //user_id for current user
     static int userId = 0;
 
-
-
     public static void main(String[] args) {
 
         //create scanner object used by program
         Scanner scanner = new Scanner(System.in);
-
-
 
         System.out.println("Welcome to your Custom Budget App");
 
@@ -178,7 +175,7 @@ public class AppClass {
             case 3:
                 System.out.println("\n------------------------");
                 System.out.println("Update Current Entry Menu");
-                System.out.println("Additional Menu Options In development");
+                updateEntry(scanner);
                 break;
 
             default:
@@ -314,8 +311,54 @@ public class AppClass {
 
     }
 
+    ///////////////////////////////////////////////
+    //Customize Entry Menu - Update Entry
+
+    //print menu options to user for Update Options
+    public static void printUpdateMenu(){
+
+        System.out.println("\nPlease select a menu option below to Update/Change an Entry" +
+                " by entering the number next to your choice\n");
+        System.out.println("1) Current User Information");
+        System.out.println("2) Income Entry");
+        System.out.println("3) Expense Entry");
+        System.out.println("4) Debt Expense Entry");
+        System.out.println("5) Savings Entry");
+        System.out.println("6) Custom Goal Entry");
+
+    }
+
+    //method to print menu to user and accept chosen menu option
+    public static void updateEntry(Scanner scanner){
+
+        System.out.println("\n------------------------");
+        printUpdateMenu();
 
 
+        //object to check user has entered valid, int input withing menu option range
+        ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
 
+        //variable to hold user choice
+        int choice = validateUserInput.getMenuChoice(6);
+        updateEntryChoice(choice, scanner);
+
+    }
+
+    public static void updateEntryChoice(int choice, Scanner scanner){
+
+        //object to call methods to update corresponding data in database
+        UpdateData updateData = new UpdateData(userId, scanner);
+
+        switch(choice){
+            case 1:
+                updateData.updateUser(scanner);
+                break;
+
+            default:
+                System.out.println("Invalid");
+                break;
+        }
+
+    }
 
 }
