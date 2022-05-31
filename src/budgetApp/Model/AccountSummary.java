@@ -4,8 +4,8 @@ public class AccountSummary {
 
     int id;
     double account_balance;
-    String month;
-    String year;
+    int month;
+    int year;
     double total_income;
     double total_expenses;
     double total_savings;
@@ -15,7 +15,7 @@ public class AccountSummary {
     }
 
     //Parameterized Constructor when creating new accountSummary Entry
-    public AccountSummary(int id, double account_balance, String month, String year, double total_income,
+    public AccountSummary(int id, double account_balance, int month, int year, double total_income,
                           double total_expenses, double total_savings) {
         this.id = id;
         this.account_balance = account_balance;
@@ -42,19 +42,19 @@ public class AccountSummary {
         this.account_balance = account_balance;
     }
 
-    public String getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    public void setMonth(String month) {
+    public void setMonth(int month) {
         this.month = month;
     }
 
-    public String getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
 

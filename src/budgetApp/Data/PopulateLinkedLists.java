@@ -301,8 +301,8 @@ public class PopulateLinkedLists {
             AccountSummary accountSummary = new AccountSummary();
             accountSummary.setId(resultSet.getInt("id"));
             accountSummary.setAccount_balance(resultSet.getDouble("account_balance"));
-            accountSummary.setMonth(resultSet.getString("month"));
-            accountSummary.setYear(resultSet.getString("year"));
+            accountSummary.setMonth(resultSet.getInt("month"));
+            accountSummary.setYear(resultSet.getInt("year"));
             accountSummary.setTotal_income(resultSet.getDouble("total_income"));
             accountSummary.setTotal_expenses(resultSet.getDouble("total_expenses"));
             accountSummary.setTotal_savings(resultSet.getDouble("total_savings"));
