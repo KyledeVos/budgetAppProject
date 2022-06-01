@@ -1,10 +1,7 @@
 package budgetApp.Controllers;
 
 import budgetApp.Data.ValidateDataFromDataBase;
-import budgetApp.Services.AddData;
-import budgetApp.Services.RemoveData;
-import budgetApp.Services.UpdateData;
-import budgetApp.Services.ValidateUserInput;
+import budgetApp.Services.*;
 
 import java.util.Scanner;
 
@@ -101,7 +98,7 @@ public class AppClass {
 
         switch(option){
             case 1:
-                System.out.println("Account Balances in Development");
+                accountMenuOptionCheck(scanner);
                 break;
 
             case 2:
@@ -372,6 +369,53 @@ public class AppClass {
 
             case 6:
                 updateData.updateCustomGoal(scanner);
+                break;
+
+            default:
+                System.out.println("Invalid");
+                break;
+        }
+
+    }
+
+    ///////////////////////////////////////////////
+    //Account Balances Menu -
+
+    public static void printAccountBalanceMainMenu(){
+
+        System.out.println("\nPlease select a menu option below by entering the number next to your choice\n");
+        System.out.println("1) Account Summary");
+        System.out.println("2) Add Option");
+        System.out.println("3) Add Option");
+
+    }
+
+    //method to print menu to user and accept chosen menu option
+    public static void accountMenuOptionCheck(Scanner scanner){
+
+        System.out.println("\n------------------------");
+        printAccountBalanceMainMenu();
+
+
+        //object to check user has entered valid, int input withing menu option range
+        ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
+
+        //variable to hold user choice
+        int choice = validateUserInput.getMenuChoice(3);
+        showAccountSummary(choice);
+
+    }
+
+    //method to accept user input for AccountSummary and call service method
+    //@param userId
+    public static void showAccountSummary(int choice){
+
+        //object to call method to show Account Summary Option
+        AccountSummary accountSummary = new AccountSummary(userId);
+
+        switch(choice){
+            case 1:
+                accountSummary.printGenSummary();
                 break;
 
             default:
