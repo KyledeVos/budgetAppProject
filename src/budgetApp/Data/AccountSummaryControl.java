@@ -2,17 +2,24 @@ package budgetApp.Data;
 
 import java.sql.*;
 
-//class responsible for adding/changing/removing data in Account Summary Table and User_AccountSummaryLookUp Table
+//class responsible for getting amount information for account Summaries from database
 public class AccountSummaryControl {
 
     Connection connection = null;
     PreparedStatement preparedStatement;
     ResultSet resultSet;
 
-    //Constructor to initialize connection, preparedStatement and ResultSet
+    //id of user
+    int userId;
 
-    public AccountSummaryControl(){
+
+    //Constructor to initialize connection, preparedStatement and ResultSet and userId
+    public AccountSummaryControl(int userId){
+
+        this.userId = userId;
+
         try{
+
 
             //load the JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -30,107 +37,67 @@ public class AccountSummaryControl {
         }
     }
 
-    //add new income to accountSummary
-    //@params userId, income Amount, date of payment
-    //we note these values would have been validated by AddData Service Method before being passed in here
-    public void addIncome(int userId, int amount, String date){
+    //used to calculate the average amount in a table
+    //@param userId, Name of table in Database
+    //@return average amount
+    public double averageAmountForTable(int userId, String tableName){
 
-        //variables to hold the month and year of the payment
-        int month;
-        int year;
-
-        //variables to hold current data in accountSummary for specific month and year
-        int accountBalance = 0;
-        int totalIncome = 0;
-
-        //these are used only if there is no existing row in the database to match the specified month and year
-        int totalExpenses = 0;
-        int totalSavings = 0;
-
-        //Convert year of payment to int value
-        String yearString = "" + date.charAt(0) + date.charAt(1) + date.charAt(2) + date.charAt(3);
-        year = Integer.parseInt(yearString);
-
-        //convert month of payment to int value
-        String monthString = "" + date.charAt(5) + date.charAt(6);
-        month = Integer.parseInt(monthString);
-
-        //convert received month as int into the name of the Month
-        String monthName = giveMonthName(month);
-
-        //DELETE ME
-        //System.out.println("month " + monthName + " year: " + year);
-
+        double average = 0;
 
         try{
 
-            preparedStatement = connection.prepareStatement("SELECT * FROM accountsummary WHERE accountsummary.month =  " +
-                            "\""+ monthName + "\" AND year = " + year);
+            //calculate and get average amount from database
+            preparedStatement = connection.prepareStatement("SELECT AVG(amount) FROM " + tableName + " JOIN user_" + tableName +
+                    " on" + " user_" + tableName + "." + tableName + "_id = " + tableName + ".id JOIN users on user_" +
+                    tableName + ".user_id = users.id WHERE users.id = " + userId);
             resultSet = preparedStatement.executeQuery();
 
-            //need a variable to check if there was row in the database mathcing the specified month and year
-            boolean emptyRow = true;
-
-
-                //at this point we know there is data for this month and year already in the accountSummary
-                while (resultSet.next()){
-
-                    //set the emptyRow to false as there is a match in the database
-                    emptyRow = false;
-
-                    accountBalance = resultSet.getInt("account_balance");
-                    totalIncome = resultSet.getInt("total_income");
-
-                    System.out.println("Acc Bal: " + accountBalance + " tot income: "+ totalIncome);
-                }
-
-                //we increment the amount of the accountBalance of total Income if there was a matching row in the database
-                if(!emptyRow) {
-
-                    //we add the amount received in income to the total income of the month and the account balance
-                    // for that month
-                    totalIncome += amount;
-                    accountBalance += amount;
-
-                    //then we set these new values in the database
-                    preparedStatement = connection.prepareStatement("UPDATE accountsummary SET account_balance = " +
-                            accountBalance + " , total_income = " + totalIncome + " WHERE month = \"" + monthName +
-                            "\" AND year = " + yearString);
-                    preparedStatement.executeUpdate();
-                } else {
-
-                    //if we reach this point it means there was no row matching the month and year in the database
-                    //and we need to create one
-
-                    preparedStatement = connection.prepareStatement("INSERT INTO accountsummary(account_balance, month, " +
-                            "year, total_income, total_expenses, total_savings) VALUES (? , ? , ? , ? , ? , ?)" );
-                    preparedStatement.setInt(1, amount);
-                    preparedStatement.setString(2, monthName);
-                    preparedStatement.setInt(3, year);
-                    preparedStatement.setInt(4, amount);
-                    preparedStatement.setInt(5, totalExpenses);
-                    preparedStatement.setInt(6, totalSavings);
-                    preparedStatement.executeUpdate();
-
-                }
-
+            while(resultSet.next()){
+                average = resultSet.getDouble(1);
+            }
 
         }catch(SQLException e){
             e.printStackTrace();
         }
-        finally {
-            try{
-                resultSet.close();
-                preparedStatement.close();
-                connection.close();
-            }catch(SQLException e){
-                e.printStackTrace();
-            }
-        }
 
+        return  average;
     }
 
 
+    //used to return the sum of an amount column in a table for a specific user
+    //@param userId, Name of table in database
+    //@return total for amount column
+    public double totalAmountForTable(int userId, String tableName) {
+
+        double total = 0;
+
+        try {
+            preparedStatement = connection.prepareStatement("SELECT SUM(amount) FROM " + tableName + " JOIN user_" + tableName +
+                    " on" + " user_" + tableName + "." + tableName + "_id = " + tableName + ".id JOIN users on user_" +
+                    tableName + ".user_id = users.id WHERE users.id = " + userId);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                total = resultSet.getDouble(1);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+    return total;
+
+    }
+
+    //method to close connections once service method run is complete
+    public void closeConnection(){
+        try{
+            preparedStatement.close();
+            resultSet.close();
+            connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 
     //HELPER METHOD
     //used to convert a month as an int into the name of the month
