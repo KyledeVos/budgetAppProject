@@ -84,7 +84,7 @@ public class AppClass {
         System.out.println("MAIN MENU");
         System.out.println("\nPlease select a menu option below by entering the number next to your choice\n");
         System.out.println("1) View Account Balances");
-        System.out.println("2) View Overview Stats");
+        System.out.println("2) View Overview Info");
         System.out.println("3) Customize Entries in Budget - Add, Remove or Update");
         System.out.println("4) Run Reports");
         System.out.println("5) Exit App");
@@ -102,7 +102,7 @@ public class AppClass {
                 break;
 
             case 2:
-                System.out.println("Overview Stats in Development");
+                overviewInfoControl(scanner);
                 break;
 
             case 3:
@@ -187,7 +187,7 @@ public class AppClass {
     //Customize Entry Menu - Add New Entry
 
     //method to print options of which type of data to add to database
-    public static void printAddEntryMenu(){
+    private static void printAddEntryMenu(){
         System.out.println("\nPlease select a menu option below by entering the number next to your choice\n");
         System.out.println("1) Add new User ");
         System.out.println("2) Add new Income ");
@@ -198,7 +198,7 @@ public class AppClass {
     }
 
     //controlling method to print menu to user and add data
-    public static void addNewEntry(Scanner scanner){
+    private static void addNewEntry(Scanner scanner){
         System.out.println("\n------------------------");
         printAddEntryMenu();
 
@@ -211,7 +211,7 @@ public class AppClass {
     }
 
     //method to accept users choice
-    public static void addNewEntryChoice(int choice, Scanner scanner){
+    private static void addNewEntryChoice(int choice, Scanner scanner){
 
         AddData addData = new AddData(scanner);
 
@@ -246,7 +246,7 @@ public class AppClass {
     ///////////////////////////////////////////////
     //Customize Entry Menu - Remove Entry
 
-    public static void printRemoveEntryMenu(){
+    private static void printRemoveEntryMenu(){
         System.out.println("\nPlease select a menu option below by entering the number next to your choice\n");
         System.out.println("1) Remove a User ");
         System.out.println("2) Remove Income ");
@@ -256,7 +256,7 @@ public class AppClass {
         System.out.println("6) Remove Custom Goal - Savings ");
     }
 
-    public static boolean removeEntry(Scanner scanner){
+    private static boolean removeEntry(Scanner scanner){
 
         System.out.println("\n------------------------");
         printRemoveEntryMenu();
@@ -269,7 +269,7 @@ public class AppClass {
 
     }
 
-    public static boolean removeEntryChoice(int choice, Scanner scanner){
+    private static boolean removeEntryChoice(int choice, Scanner scanner){
 
         RemoveData removeData = new RemoveData(scanner);
 
@@ -312,7 +312,7 @@ public class AppClass {
     //Customize Entry Menu - Update Entry
 
     //print menu options to user for Update Options
-    public static void printUpdateMenu(){
+    private static void printUpdateMenu(){
 
         System.out.println("\nPlease select a menu option below to Update/Change an Entry" +
                 " by entering the number next to your choice\n");
@@ -326,7 +326,7 @@ public class AppClass {
     }
 
     //method to print menu to user and accept chosen menu option
-    public static void updateEntry(Scanner scanner){
+    private static void updateEntry(Scanner scanner){
 
         System.out.println("\n------------------------");
         printUpdateMenu();
@@ -341,7 +341,7 @@ public class AppClass {
 
     }
 
-    public static void updateEntryChoice(int choice, Scanner scanner){
+    private static void updateEntryChoice(int choice, Scanner scanner){
 
         //object to call methods to update corresponding data in database
         UpdateData updateData = new UpdateData(userId, scanner);
@@ -382,11 +382,60 @@ public class AppClass {
     //Account Balances Print
 
     //method to show user's account Summary
-    public static void showAccountSummary() {
+    private static void showAccountSummary() {
 
         //object to call method to show Account Summary Option
         AccountSummary accountSummary = new AccountSummary(userId);
         accountSummary.printGenSummary();
+    }
+
+
+    ///////////////////////////////////////////////
+    //Overview Info Menu
+
+    //print menu options to user for Overview Info Options
+    private static void printOverviewMenu(){
+
+        System.out.println("\nPlease select a menu option below to Update/Change an Entry" +
+                " by entering the number next to your choice\n");
+        System.out.println("1) Upcoming Debt Payments and Amounts");
+        System.out.println("2) Completion of Custom Goals");
+        System.out.println("3) Amount You could add to savings");
+        System.out.println("4) 30 vs 60 day expense Track");
+
+    }
+
+    //method to print menu to user and accept chosen menu option
+    private static void overviewInfoControl(Scanner scanner){
+
+        System.out.println("\n------------------------");
+        printOverviewMenu();
+
+
+        //object to check user has entered valid, int input within menu option range
+        ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
+
+        //variable to hold user choice
+        int choice = validateUserInput.getMenuChoice(4);
+        overviewInfoChoice(choice);
+
+    }
+
+    private static void overviewInfoChoice(int choice){
+
+        //object to call methods to update corresponding data in database
+        OverviewInfo overviewInfo = new OverviewInfo(userId);
+
+        switch(choice){
+            case 1:
+                overviewInfo.printUpcomingDebtPaymentInfo();
+                break;
+
+            default:
+                System.out.println("Invalid");
+                break;
+        }
+
     }
 
 }

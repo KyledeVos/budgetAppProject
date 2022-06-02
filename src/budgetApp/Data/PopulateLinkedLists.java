@@ -207,7 +207,7 @@ public class PopulateLinkedLists {
 
     //populate DebtPayments List with data from Debt_Payments Table in Database
     //@Params DebtPayments LinkedList
-    private void initializeDebtPayments(LinkedList<DebtPayments> debtPaymentsList) throws SQLException{
+    public void initializeDebtPayments(LinkedList<DebtPayments> debtPaymentsList) throws SQLException{
 
         //first we clear all data that may be in the list
         debtPaymentsList.clear();

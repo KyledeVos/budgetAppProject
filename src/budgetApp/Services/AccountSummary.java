@@ -83,6 +83,5 @@ public class AccountSummary {
         //close connection to database
         accountSummaryControl.closeConnection();
 
-
     }
 }

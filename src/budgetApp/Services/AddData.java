@@ -366,7 +366,7 @@ public class AddData {
 
         //total desired
         //--------------------------
-        totalDesired = validateUserInput.getAmountValue("Please desired total to reach goal. For decimals please use a comma \',\':");
+        totalDesired = validateUserInput.getAmountValue("Please enter desired total to reach goal. For decimals please use a comma \',\':");
 
         //finalDate
         //--------------------------
