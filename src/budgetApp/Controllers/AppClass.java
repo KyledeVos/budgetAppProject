@@ -314,7 +314,7 @@ public class AppClass {
     //print menu options to user for Update Options
     private static void printUpdateMenu(){
 
-        System.out.println("\nPlease select a menu option below to Update/Change an Entry" +
+        System.out.println("\nPlease select a menu option below" +
                 " by entering the number next to your choice\n");
         System.out.println("1) Current User Information");
         System.out.println("2) Income Entry");
@@ -396,7 +396,7 @@ public class AppClass {
     //print menu options to user for Overview Info Options
     private static void printOverviewMenu(){
 
-        System.out.println("\nPlease select a menu option below to Update/Change an Entry" +
+        System.out.println("\nPlease select a menu option below " +
                 " by entering the number next to your choice\n");
         System.out.println("1) Upcoming Debt Payments and Amounts");
         System.out.println("2) Completion of Custom Goals");
@@ -430,6 +430,9 @@ public class AppClass {
             case 1:
                 overviewInfo.printUpcomingDebtPaymentInfo();
                 break;
+
+            case 2:
+                overviewInfo.printCustomGoalsInfo();
 
             default:
                 System.out.println("Invalid");

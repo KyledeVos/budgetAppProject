@@ -10,11 +10,14 @@ package budgetApp.Services;
 
 import budgetApp.Controllers.LinkedListsClass;
 import budgetApp.Data.PopulateLinkedLists;
+import budgetApp.Model.CustomGoals;
 import budgetApp.Model.DebtPayments;
 
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class OverviewInfo {
 
@@ -80,6 +83,47 @@ public class OverviewInfo {
 
     }
 
+    //method to print out time and amount till completion of custom goal
+    public void printCustomGoalsInfo(){
+
+        //first we need a Linked List containing all custom goals for a user
+        LinkedList<CustomGoals> customGoals = new LinkedList<>();
+
+        try {
+
+            //populate debt payments list with data from database
+            customGoals = listsClass.getCustomGoals();
+            populateLinkedLists.initializeCustomGoals(customGoals);
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("--------------------------------------------");
+        System.out.println("Custom Goals Overview");
+
+        //if there is no data in the LinkedList there are no custom Goals set by the user
+        if(customGoals.size() == 0){
+            System.out.println("No Custom Goalsfor user");
+            System.out.println("--------------------------------------------");
+            return;
+        }
+
+        //at this point we know there are custom Goals for the user
+
+        //we want to get a list of all unique custom goals with an amount equal to the total the user
+        //has saved towards the goal
+
+        LinkedList<CustomGoals> shortList = summarizeCustomGoals(customGoals);
+
+        for(CustomGoals copy : shortList){
+            System.out.println("\nCustom Goal: " + copy.getDescription());
+            System.out.println("Amount Saved: R" + copy.getAmount());
+            System.out.println("Total amount need to complete goal: R" + copy.getTotal_desired());
+        }
+
+    }
+
     //HELPER METHOD
     //used to populate a debt payment linked list with data from last entry in list and go back one month
     //@param Linked List
@@ -131,6 +175,83 @@ public class OverviewInfo {
         }
 
         return  reducedList;
+
+    }
+
+
+    //HELPER METHOD
+    //used to populate a LinkedList with current, non-duplicated custom goals for a user
+    //@param Complete Linked List of all custom goals for user
+    //@return Linked List of unique custom goals with amount modified to total amount user has saved toward goal\
+    private LinkedList<CustomGoals> summarizeCustomGoals(LinkedList<CustomGoals> fullList){
+
+        //Linked List of summarized custom goals to return
+        LinkedList<CustomGoals> shortList = new LinkedList<>();
+
+        //create a list to hold names of all custom_goals
+        List<String> names = new LinkedList<>();
+
+        //populate list will all names from full list
+        for(CustomGoals hold : fullList){
+            names.add(hold.getDescription());
+        }
+
+        //use Stream API to make a unique list of goal descriptions
+        List<String> uniqueList = names.stream().distinct().collect(Collectors.toList());
+
+        //populate shortList:
+        //now we iterate through the fullList comparing the description name to the unique name in
+        //the uniqueList of goal names (descriptions) and add the first object that matches in the fullList
+        //to the shortList
+        int limit = uniqueList.size();
+        int count = 0;
+
+        while(count<limit) {
+
+            String description = uniqueList.get(count);
+
+            for (CustomGoals hold : fullList) {
+                if(hold.getDescription().equals(description)){
+
+                    //here we want to change the amount of hold to zero for when we
+                    //add all the amounts together in the next step
+                    //however we keep track of the old amount to restore it in the fullList
+
+                    shortList.add(hold);
+                    count++;
+                    break;
+                }
+            }
+        }
+
+        //finally, we iterate through the fullList checking for matching names with the unique goals in shortList
+        //if there is a match, then we add the amount from the goal in the fullList to the amount in the shortList
+        for(CustomGoals shortListTemp: shortList){
+
+            //for first run, get amount in shortList to subtract from amount at end
+            //addition of amount from fullList causes a duplicate on first entry
+            double firstAmount = shortListTemp.getAmount();
+            for(CustomGoals fullListTemp: fullList){
+
+                if(shortListTemp.getDescription().equals(fullListTemp.getDescription())){
+
+                    //get current amount in shortList goal and increase amount by fullList goal
+                    double amount = shortListTemp.getAmount();
+                    amount += fullListTemp.getAmount();
+                    shortListTemp.setAmount(amount);
+
+                }
+
+            }
+
+            //reduce shortListAmount by subtracting initial duplicate amount from fullList
+            double oldAmount = shortListTemp.getAmount();
+            shortListTemp.setAmount(oldAmount - firstAmount);
+
+        }
+
+        //we return the shortList
+        return shortList;
 
     }
 

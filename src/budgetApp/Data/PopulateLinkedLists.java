@@ -260,7 +260,7 @@ public class PopulateLinkedLists {
 
     //populate CustomGoals List with data from CustomGoals Table in Database
     //@Params CustomGoals LinkedList
-    private void initializeCustomGoals(LinkedList<CustomGoals> customGoalsList) throws SQLException{
+    public void initializeCustomGoals(LinkedList<CustomGoals> customGoalsList) throws SQLException{
 
         //first we clear all data that may be in the list
         customGoalsList.clear();
