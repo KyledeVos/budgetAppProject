@@ -400,7 +400,7 @@ public class AppClass {
                 " by entering the number next to your choice\n");
         System.out.println("1) Upcoming Debt Payments and Amounts");
         System.out.println("2) Completion of Custom Goals");
-        System.out.println("3) Amount You could add to savings");
+        System.out.println("3) Amount you could add to savings");
         System.out.println("4) 30 vs 60 day expense Track");
 
     }
@@ -417,11 +417,11 @@ public class AppClass {
 
         //variable to hold user choice
         int choice = validateUserInput.getMenuChoice(4);
-        overviewInfoChoice(choice);
+        overviewInfoChoice(scanner, choice);
 
     }
 
-    private static void overviewInfoChoice(int choice){
+    private static void overviewInfoChoice(Scanner scanner, int choice){
 
         //object to call methods to update corresponding data in database
         OverviewInfo overviewInfo = new OverviewInfo(userId);
@@ -433,6 +433,11 @@ public class AppClass {
 
             case 2:
                 overviewInfo.printCustomGoalsInfo();
+                break;
+
+            case 3:
+                overviewInfo.savingsCalculator(scanner);
+                break;
 
             default:
                 System.out.println("Invalid");

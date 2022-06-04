@@ -9,6 +9,7 @@ package budgetApp.Services;
 
 
 import budgetApp.Controllers.LinkedListsClass;
+import budgetApp.Data.AccountSummaryControl;
 import budgetApp.Data.PopulateLinkedLists;
 import budgetApp.Model.CustomGoals;
 import budgetApp.Model.DebtPayments;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class OverviewInfo {
@@ -25,11 +27,15 @@ public class OverviewInfo {
     LinkedListsClass listsClass;
     PopulateLinkedLists populateLinkedLists;
 
+    //id of user
+    int userId;
+
 
     //constructor Initializes Class
     public OverviewInfo(int userId){
         listsClass = new LinkedListsClass();
         populateLinkedLists = new PopulateLinkedLists(userId);
+        this.userId = userId;
 
     }
 
@@ -75,6 +81,7 @@ public class OverviewInfo {
             for(DebtPayments current : previousPayments){
                 System.out.println(count + " : name - " + current.getType_category() + ", Amount :R " +
                         current.getAmount() + ", next payment date : " + incrementDate(current.getPayment_date()));
+                count++;
             }
 
             System.out.println("--------------------------------------------");
@@ -121,6 +128,71 @@ public class OverviewInfo {
             System.out.println("Amount Saved: R" + copy.getAmount());
             System.out.println("Total amount need to complete goal: R" + copy.getTotal_desired());
         }
+
+    }
+
+    //method allowing user to try and test the amount they would like to add to their savings
+    //calculates their current account balance and allows user to enter a percentage of this amount they would like to add
+    //to savings. Does not add the amount for the user
+    //@params Scanner instance, userId
+    public void savingsCalculator(Scanner scanner){
+
+        //first we need to get the user's total income, total expenses, total debt payments, total
+        //savings and total custom_goals amount to determine their current account balance
+        AccountSummaryControl accountSummaryControl = new AccountSummaryControl(userId);
+
+        double totalIncome = accountSummaryControl.totalAmountForTable(userId, "income");
+        double totalExpenses = accountSummaryControl.totalAmountForTable(userId, "expenses");
+        double totalDebtPayments = accountSummaryControl.totalAmountForTable(userId, "debt_payments");
+        double totalSavings = accountSummaryControl.totalAmountForTable(userId, "savings");
+        double totalCustomGoals = accountSummaryControl.averageAmountForTable(userId, "custom_goals");
+
+        //calculate user's current account balance
+        double currentBalance = totalIncome - totalExpenses - totalDebtPayments - totalSavings - totalCustomGoals;
+
+        //boolean to check if user wants to stop using tool
+        boolean quit = false;
+
+        //print current balance data to user
+        System.out.println("-------------------------------------------");
+        System.out.println("Savings Calculator Tool\n");
+
+        System.out.println("Your Current Balance is R" + currentBalance + "\n");
+
+        //variable to hold user's choice
+        int choice;
+
+        while(!quit){
+
+            System.out.println("\nPlease enter percentage you would like to save or \'0'\' to quit");
+
+            boolean hasInt = scanner.hasNextInt();
+
+            if(hasInt){
+                choice = scanner.nextInt();
+
+                if(choice== 0){
+                    System.out.println("Exit");
+                    quit = true;
+
+                } else if(choice > 0 && choice <100){
+                    int savingsAmount = (int) ((currentBalance * ((double) (choice)/100)));
+                    System.out.println("Percentage: " + choice + "%");
+                    System.out.println("Savings Amount would be: R" + savingsAmount);
+                    System.out.println("Remaining account balance would be: R" + (currentBalance - savingsAmount));
+                } else{
+                    System.out.println("Invalid Percentage. Please enter a number between 1 and 100 or \'0\' to quit");
+                }
+
+            }else{
+                System.out.println("Invalid Input");
+            }
+
+            scanner.nextLine();
+
+        }
+
+        System.out.println("----------------------------------------------------");
 
     }
 
