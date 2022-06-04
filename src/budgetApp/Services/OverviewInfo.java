@@ -285,10 +285,6 @@ public class OverviewInfo {
             for (CustomGoals hold : fullList) {
                 if(hold.getDescription().equals(description)){
 
-                    //here we want to change the amount of hold to zero for when we
-                    //add all the amounts together in the next step
-                    //however we keep track of the old amount to restore it in the fullList
-
                     shortList.add(hold);
                     count++;
                     break;
