@@ -110,7 +110,7 @@ public class AppClass {
                 break;
 
             case 4:
-                System.out.println("Run Reports in development");
+               reportsControl(scanner);
                 break;
 
             case 5:
@@ -401,7 +401,6 @@ public class AppClass {
         System.out.println("1) Upcoming Debt Payments and Amounts");
         System.out.println("2) Completion of Custom Goals");
         System.out.println("3) Amount you could add to savings");
-        System.out.println("4) 30 vs 60 day expense Track");
 
     }
 
@@ -416,7 +415,7 @@ public class AppClass {
         ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
 
         //variable to hold user choice
-        int choice = validateUserInput.getMenuChoice(4);
+        int choice = validateUserInput.getMenuChoice(3);
         overviewInfoChoice(scanner, choice);
 
     }
@@ -446,4 +445,55 @@ public class AppClass {
 
     }
 
+    ///////////////////////////////////////////////
+    //Reports Menu
+
+    //print menu options to user for Reports
+
+    private static void printReportsMenu(){
+
+        System.out.println("\nPlease select a menu option below " +
+                " by entering the number next to your choice\n");
+        System.out.println("1) Debt Payments Completion Report Tool");
+        System.out.println("2) Monthly Report: Savings VS Spending");
+
+    }
+
+    //method to print menu to user and accept chosen menu option
+    private static void reportsControl(Scanner scanner){
+
+        System.out.println("\n------------------------");
+        printReportsMenu();
+
+
+        //object to check user has entered valid, int input within menu option range
+        ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
+
+        //variable to hold user choice
+        int choice = validateUserInput.getMenuChoice(2);
+        reportsChoice(scanner, choice);
+    }
+
+
+    private static void reportsChoice(Scanner scanner, int choice){
+
+        //object to call methods to run reports
+        RunReports runReports = new RunReports(scanner, userId);
+
+        switch(choice){
+            case 1:
+                runReports.debtPayOff();
+                break;
+
+            case 2:
+                runReports.spendingVsSavings();
+                break;
+
+
+            default:
+                System.out.println("Invalid");
+                break;
+        }
+
+    }
 }

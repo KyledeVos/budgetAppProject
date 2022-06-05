@@ -2,7 +2,10 @@ package budgetApp.Services;
 
 import budgetApp.Controllers.LinkedListsClass;
 import budgetApp.Data.PopulateLinkedLists;
+import budgetApp.Model.CustomGoals;
 import budgetApp.Model.DebtPayments;
+import budgetApp.Model.Expenses;
+import budgetApp.Model.Savings;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -89,7 +92,6 @@ public class RunReports {
         double paymentAmount = chosenDebt.getAmount();
         double totalDue = chosenDebt.getTotal_owed();
         double interestRate = chosenDebt.getInterest();
-        System.out.println(paymentAmount + " " + totalDue + " " + interestRate);
         String currentDebtPaymentTime = debtTimeCalculator(paymentAmount, totalDue, interestRate);
 
         //calculate how long it would take to pay debt off by paying 20% more
@@ -106,6 +108,125 @@ public class RunReports {
 
         System.out.println("--------------------------------------------");
 
+    }
+
+    //method to compare amount user has saved in total vs amount user has spent in total for each month
+    public void spendingVsSavings(){
+
+        //first we need Linked Lists containing all Expenses, DebtPayments, Savings and
+        // Custom Goals for a user
+        LinkedList<Expenses> expenses = new LinkedList<>();
+        LinkedList<DebtPayments> debtPayments = new LinkedList<>();
+        LinkedList<Savings> savings = new LinkedList<>();
+        LinkedList<CustomGoals> customGoals = new LinkedList<>();
+
+        //populate Linked Lists with data from database
+        try {
+
+            //populate expenses list with data from database
+            expenses = listsClass.getExpenses();
+            populateLinkedLists.initializeExpenses(expenses);
+
+            //populate debt payments list with data from database
+            debtPayments = listsClass.getDebtPayments();
+            populateLinkedLists.initializeDebtPayments(debtPayments);
+
+            //populate savings list with data from database
+            savings = listsClass.getSavings();
+            populateLinkedLists.initializeSavings(savings);
+
+            //populate custom goals list with data from database
+            customGoals = listsClass.getCustomGoals();
+            populateLinkedLists.initializeCustomGoals(customGoals);
+
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("--------------------------------------------");
+        System.out.println("Savings VS Spending");
+
+        //if there is no data in at least the expenses or debt_payments lists, then we cannot compare
+        //or if there is no data in at least the savings or custom goals lists, then we cannot compare
+
+        if((debtPayments.size() == 0) && (expenses.size() ==0)){
+            System.out.println("No Spending has been found for user. Cannot perform comparison report");
+            System.out.println("--------------------------------------------");
+            return;
+        } else if((savings.size() == 0) && customGoals.size() == 0){
+            System.out.println("No Savings has been found for user. Cannot perform comparison report");
+            System.out.println("--------------------------------------------");
+            return;
+        }
+
+        //at this point we know there is at least one spending table and one savings data with data that can be compared
+
+        //more likely a user would have expenses before savings so use expense table as comparison reference point
+
+        //get month from first and last expense and convert to int value
+
+        int firstMonth = Integer.parseInt(expenses.get(0).getPayment_date().substring(5, 7));
+        int lastMonth = Integer.parseInt(expenses.get(expenses.size()-1).getPayment_date().substring(5, 7));
+
+        //iterate through data in all table from startMonth to endMonth
+        //sum all amount and give a total of money spent and money saved for each month
+        for(int i =firstMonth; i<=lastMonth;i++){
+
+            //keep track of current month
+            int currentMonth = i;
+
+            //keep track of current year from expense table
+            int year = 0;
+
+            double totalSpent = 0;
+            double totalSaved = 0;
+
+            //iterate through expenses
+            for(Expenses copy: expenses){
+                int expenseMonth = Integer.parseInt(copy.getPayment_date().substring(5, 7));
+                if(expenseMonth == i ){
+                    totalSpent +=copy.getAmount();
+
+
+                    //update year
+                    year = Integer.parseInt(copy.getPayment_date().substring(0, 4));
+                }
+
+            }
+
+            //iterate through debt payments
+            for(DebtPayments copy: debtPayments){
+                int debtMonth = Integer.parseInt(copy.getPayment_date().substring(5, 7));
+                if(debtMonth == currentMonth){
+                    totalSpent += copy.getAmount();
+                }
+            }
+
+            //iterate through savings
+            for(Savings copy : savings){
+                int savingsMonth = Integer.parseInt(copy.getSaved_date().substring(5, 7));
+                if(savingsMonth == currentMonth){
+                    totalSaved += copy.getAmount();
+                }
+            }
+
+            //iterate through custom goals
+            for(CustomGoals copy: customGoals){
+                int goalMonth = Integer.parseInt(copy.getSaved_date().substring(5, 7));
+                if(goalMonth == currentMonth){
+                    totalSaved += copy.getAmount();
+                }
+            }
+
+            //Display Information to User
+            System.out.println("\nData for " + monthNumberToName(currentMonth) + " " + year);
+            System.out.println("Total Saved: R" + totalSaved );
+            System.out.println("Total Spent: R" + totalSpent);
+            System.out.println("Ratio of Spent vs Saved:  1 : " + totalSaved/totalSpent);
+        }
+
+        System.out.println("--------------------------------------------");
     }
 
     //HELPER METHOD
@@ -179,6 +300,57 @@ public class RunReports {
 
         //we return the shortList
         return shortList;
+    }
+
+
+    //HELPER METHOD
+    //used to convert a month from its number value to its name
+    //@param number of month
+    //@return String monthName
+    private String monthNumberToName(int number){
+
+        switch(number){
+            case 1:
+                return "January";
+
+            case 2:
+                return "February";
+
+            case 3:
+                return "March";
+
+            case 4:
+                return "April";
+
+            case 5:
+                return "May";
+
+            case 6:
+                return "June";
+
+            case 7:
+                return "July";
+
+            case 8:
+                return "August";
+
+            case 9:
+                return "September";
+
+            case 10:
+                return "October";
+
+            case 11:
+                return "November";
+
+            case 12:
+                return "December";
+
+            default:
+                return "Invalid Month Number";
+
+        }
+
     }
 
 }

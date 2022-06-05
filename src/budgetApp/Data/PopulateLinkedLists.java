@@ -180,7 +180,7 @@ public class PopulateLinkedLists {
 
     //populate expenses List with data from Expenses Table in Database
     //@Params Expense LinkedList
-    private void initializeExpenses(LinkedList<Expenses> expenseList) throws SQLException{
+    public void initializeExpenses(LinkedList<Expenses> expenseList) throws SQLException{
 
         //first we clear all data that may be in the list
         expenseList.clear();
@@ -235,7 +235,7 @@ public class PopulateLinkedLists {
 
     //populate savings List with data from Savings Table in Database
     //@Params Savings LinkedList
-    private void initializeSavings(LinkedList<Savings> savingsList) throws SQLException{
+    public void initializeSavings(LinkedList<Savings> savingsList) throws SQLException{
 
         //first we clear all data that may be in the list
         savingsList.clear();
