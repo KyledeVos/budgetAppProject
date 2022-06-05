@@ -456,6 +456,7 @@ public class AppClass {
                 " by entering the number next to your choice\n");
         System.out.println("1) Debt Payments Completion Report Tool");
         System.out.println("2) Monthly Report: Savings VS Spending");
+        System.out.println("3) Debt Urgency");
 
     }
 
@@ -470,7 +471,7 @@ public class AppClass {
         ValidateUserInput validateUserInput = new ValidateUserInput(scanner);
 
         //variable to hold user choice
-        int choice = validateUserInput.getMenuChoice(2);
+        int choice = validateUserInput.getMenuChoice(3);
         reportsChoice(scanner, choice);
     }
 
@@ -487,6 +488,10 @@ public class AppClass {
 
             case 2:
                 runReports.spendingVsSavings();
+                break;
+
+            case 3:
+                runReports.debtUrgency();
                 break;
 
 

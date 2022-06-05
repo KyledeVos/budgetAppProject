@@ -229,6 +229,70 @@ public class RunReports {
         System.out.println("--------------------------------------------");
     }
 
+    //method to show debt urgency to user
+    //shows user which debt has the interest rate, which has the highest total
+    public void debtUrgency(){
+
+        //first we need a Linked List containing all Debt Payments for a user
+        LinkedList<DebtPayments> debtPayments = new LinkedList<>();
+
+        try {
+
+            //populate debt payments list with data from database
+            debtPayments = listsClass.getDebtPayments();
+            populateLinkedLists.initializeDebtPayments(debtPayments);
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("--------------------------------------------");
+        System.out.println("Debt Payment Urgency Rankings\n");
+
+        //if there is no data in the LinkedList there are no debt payments
+        if(debtPayments.size() == 0){
+            System.out.println("No Debt Payments found for user");
+            System.out.println("--------------------------------------------");
+            return;
+        }
+
+        //at this point we know there are DebtPayments
+
+        //we want to get a list of all unique, most recent paid debt Payments for user
+        LinkedList<DebtPayments> shortList = summarizeDebtPayments(debtPayments);
+
+        //find highest interest rate of debt payment
+        double interest = shortList.get(0).getInterest();
+        DebtPayments copy = shortList.get(0);
+
+        for(int i =0; i< shortList.size()-1; i++){
+
+            if(shortList.get(i).getInterest() > interest){
+                interest = shortList.get(i).getInterest();
+                copy = shortList.get(i);
+            }
+        }
+
+        System.out.println("1) Debt with Highest Interest: " + copy.getType_category() + " with interest: " + interest + "%");
+
+        //find debt with the greatest total due
+        double total = shortList.get(0).getTotal_owed();
+        copy = shortList.get(0);
+
+        for(int i = 0; i<shortList.size()-1; i++){
+            if(shortList.get(i).getTotal_owed() > total){
+                total = shortList.get(i).getTotal_owed();
+                copy = shortList.get(i);
+            }
+        }
+
+        System.out.println("2) Debt with greatest amount due: " + copy.getType_category() +
+                " with remaining total: R" + total + "\n");
+
+        System.out.println("--------------------------------------------");
+
+    }
+
     //HELPER METHOD
     //used to calculate the number of years and months it would take a user to pay off a debt
     //uses a present value annuity with compound interest.
