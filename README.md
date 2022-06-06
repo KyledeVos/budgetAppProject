@@ -15,3 +15,21 @@ reports are selected. The program will analyse the data in the LinkedLists
  * - Income
  * - Various Expenses - Debt Payments and General Expenses
  * - Savings - General Savings and Custom Goals
+
+
+* Show Overview Account and Budget Information
+*  - Show user current Account Summary information
+*  - Allow user to see upcoming debt payment information
+*  - Display progress of custom savings goals
+*  - savings tool allowing user to see how much they could ass to their savings with effect on account balance
+
+* Run Reports
+* - allow user to select a debt payment and see time it would take to pay it off
+* - Monthly break-down of total savings vs spending 
+* - debt urgency report showing which debt payment has the highest interest rate and which has the highest amount owing
+
+## Installation
+
+use 
+
+Program requires an IDE running java with main file located in AppClass in Controllers package
