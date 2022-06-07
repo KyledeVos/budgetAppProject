@@ -30,6 +30,19 @@ reports are selected. The program will analyse the data in the LinkedLists
 
 ## Installation
 
-use 
+Run budgetAppDatabase.sql to create tables required for program located in src folder
 
 Program requires an IDE running java with main file located in AppClass in Controllers package
+
+Before running main, all classes in Database must be given a user name and password for connection to local host in Connection String
+
+Classes to add user name and password:
+* AccountSummaryControl
+* AddDataToDataBase
+* PopulateLinkedLists
+* RemoveDataFromDataBase
+* UpdateDataFromDataBase
+* ValidateDataFromDataBase
+
+
+
